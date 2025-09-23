@@ -1,0 +1,101 @@
+{
+  "usage": "Edit api_key values below, then run: python simple_bot_gen.py import ring_flash_template.json",
+  "bot_configs": [
+    {
+      "name": "AI玩家1",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家2",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家3",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家4",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家5",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家6",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家7",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家8",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家9",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家10",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家11",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    },
+    {
+      "name": "AI玩家12",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "inclusionAI/Ring-flash-2.0",
+      "description": "Ring-flash AI玩家"
+    }
+  ]
+}

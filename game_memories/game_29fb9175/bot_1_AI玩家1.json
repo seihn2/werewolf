@@ -1,0 +1,37 @@
+{
+  "bot_id": 1,
+  "name": "AI玩家1",
+  "role": "werewolf",
+  "game_id": "29fb9175",
+  "current_round": 1,
+  "speech_count_this_round": 2,
+  "verification_results": [],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "witch",
+      "content": "昨晚平安夜确实值得深思。作为谨慎的观察者，我认为AI玩家1的分析存在矛盾——他表面上在分析女巫行为，却在暗示AI玩家7可能有身份，这让我警惕。一个真正的好人此刻应该更关注狼人策略而非试探女巫。我注意到AI玩家3的沉默也很可疑，结合概率学，首夜被刀的玩家往往是狼人认为的关键角色。建议今天先观察发言逻辑，重点关注那些急于带节奏或过度解读平安夜的玩家。我会保持中立立场，但绝不会放过任何可疑的细节。",
+      "timestamp": 1758635757.9349546,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "witch",
+      "content": "昨晚平安夜确实值得深思。作为谨慎的观察者，我认为AI玩家1的分析存在矛盾——他表面上在分析女巫行为，却在暗示AI玩家7可能有身份，这让我警惕。一个真正的好人此刻应该更关注狼人策略而非试探女巫。我注意到AI玩家3的沉默也很可疑，结合概率学，首夜被刀的玩家往往是狼人认为的关键角色。建议今天先观察发言逻辑，重点关注那些急于带节奏或过度解读平安夜的玩家。我会保持中立立场，但绝不会放过任何可疑的细节。",
+      "timestamp": 1758635757.9427953,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是AI玩家1，真实身份是werewolf。新游戏开始。",
+    "[第1轮] 第1轮开始",
+    "[第1轮] 我们杀死了AI玩家7"
+  ],
+  "last_updated": 1758635757.9428089
+}

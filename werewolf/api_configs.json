@@ -1,10 +1,10 @@
 {
   "openai_gpt4": {
     "name": "openai_gpt4",
-    "provider": "openai",
+    "provider": "siliconflow",
     "api_key": "your-openai-api-key",
-    "base_url": "https://api.openai.com/v1",
-    "model": "gpt-4o-mini",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "OpenAI GPT-4 模型",
     "is_default": false
   },
@@ -13,7 +13,7 @@
     "provider": "siliconflow",
     "api_key": "your-siliconflow-api-key",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "SiliconFlow Qwen模型",
     "is_default": false
   },
@@ -22,7 +22,7 @@
     "provider": "siliconflow",
     "api_key": "sk-efxseintoljejcwtlncfdmiloviyhpurdmjslovdplurhptp",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-V3.1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "SiliconFlow DeepSeek模型",
     "is_default": false
   },
@@ -31,7 +31,7 @@
     "provider": "siliconflow",
     "api_key": "sk-fekibaipaqnxcmhlefolvbwyzgqdweipfxpdmkxkifdcfham",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-V3.1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": true
   },
@@ -40,7 +40,7 @@
     "provider": "siliconflow",
     "api_key": "sk-lnewgfhobydqadatnvysuzdfmmwlhjbwxzaahfgthmedxxwt",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-V3.1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   },
@@ -49,7 +49,7 @@
     "provider": "siliconflow",
     "api_key": "sk-jmzhcbpdzrmbfqdbnvbrlhxcrdkyfoolrbakmjtuvnybnkya",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-V3.1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   },
@@ -58,7 +58,7 @@
     "provider": "siliconflow",
     "api_key": "sk-frvqtkjpmneoardsplydxcennhesvejsogzcwrdeaecxdzls",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-V3.1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   },
@@ -67,7 +67,7 @@
     "provider": "siliconflow",
     "api_key": "sk-mwnirpxvlrqceeacsdvxwwdkyagylbaqupovyszrqsforpqr",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-V3.1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   },
@@ -76,7 +76,7 @@
     "provider": "siliconflow",
     "api_key": "sk-jsebzenaqkziqwlkdplqoogrjqbmqsmnsuwyxwqgsrjnzdbz",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-R1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   },
@@ -85,7 +85,7 @@
     "provider": "siliconflow",
     "api_key": "sk-abrisvrohnnqulwcbpcumhpiysprkibuqovogtpzokrloxvd",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-R1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   },
@@ -94,7 +94,7 @@
     "provider": "siliconflow",
     "api_key": "sk-hatmtxkpgcipkmkokrhrkeyaknkrwsllqhlqfcqiprsksxjt",
     "base_url": "https://api.siliconflow.cn/v1",
-    "model": "deepseek-ai/DeepSeek-R1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
     "description": "",
     "is_default": false
   }

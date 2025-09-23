@@ -14,6 +14,7 @@ from .game_logger import GameLogger, EventType
 from .round_manager import RoundManager
 from .conversation_manager import ConversationManager
 from .llm_manager import LLMConfig
+from .name_generator import NameGenerator
 
 
 class EnhancedWerewolfGameController:
@@ -101,11 +102,15 @@ class EnhancedWerewolfGameController:
 
     def _create_players(self) -> List[Player]:
         """创建玩家对象"""
+        # 使用名字生成器为每个AI分配随机名字
+        name_generator = NameGenerator()
+        random_names = name_generator.get_random_names(len(self.player_configs))
+
         players = []
-        for i, config in enumerate(self.player_configs):
+        for i, (config, random_name) in enumerate(zip(self.player_configs, random_names)):
             player = Player(
                 id=i + 1,
-                name=config["name"],
+                name=random_name,  # 使用随机生成的名字
                 role=Role.VILLAGER  # 临时角色，稍后分配
             )
             players.append(player)

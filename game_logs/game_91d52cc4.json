@@ -1,0 +1,158 @@
+{
+  "game_id": "91d52cc4",
+  "events": [
+    {
+      "timestamp": 1758637046.6249824,
+      "round_number": 0,
+      "phase": "preparation",
+      "event_type": "game_start",
+      "player_name": null,
+      "content": "游戏开始，参与玩家：王者(werewolf), 宇轩(seer), 混沌(werewolf), 何花(witch), 子轩(hunter), 周涛(guard), 火焰(villager)",
+      "metadata": {
+        "players": [
+          {
+            "name": "王者",
+            "role": "werewolf"
+          },
+          {
+            "name": "宇轩",
+            "role": "seer"
+          },
+          {
+            "name": "混沌",
+            "role": "werewolf"
+          },
+          {
+            "name": "何花",
+            "role": "witch"
+          },
+          {
+            "name": "子轩",
+            "role": "hunter"
+          },
+          {
+            "name": "周涛",
+            "role": "guard"
+          },
+          {
+            "name": "火焰",
+            "role": "villager"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": 1758637046.626973,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第1轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758637046.636267,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758637046.638466,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "王者",
+      "content": "对周涛使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "周涛"
+      }
+    },
+    {
+      "timestamp": 1758637046.6416306,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "宇轩查验混沌，结果：bad",
+      "metadata": {
+        "seer": "宇轩",
+        "target": "混沌",
+        "result": "bad"
+      }
+    },
+    {
+      "timestamp": 1758637046.643327,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "何花",
+      "content": "对周涛使用救人",
+      "metadata": {
+        "action": "救人",
+        "target": "周涛"
+      }
+    },
+    {
+      "timestamp": 1758637048.6461208,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "day -> day",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758637078.6575148,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "王者",
+      "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。",
+      "metadata": {
+        "speech_count": 1,
+        "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。"
+      }
+    },
+    {
+      "timestamp": 1758637107.5506244,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "宇轩",
+      "content": "各位好，经过昨晚的神圣查验，我确认混沌是狼人，这为真相奠定了基石。现在，王者质疑预言家身份，但作为已知狼人，他的逻辑明显矛盾——真预言家会主动分享有限信息以稳定局势，而假预言家往往回避细节或制造混乱。王者的发言恰恰暴露了他试图转移视线、诱导好人内讧的意图。我分析概率：假预言家成功率低于20%，而王者的行为模式高度符合狼人试探策略。建议好人聚焦于混沌和王者这两个高危目标。后续我将用更多神启指引方向，但绝不会在此时暴露全部身份，以免成为优先击杀目标。",
+      "metadata": {
+        "speech_count": 1,
+        "content": "各位好，经过昨晚的神圣查验，我确认混沌是狼人，这为真相奠定了基石。现在，王者质疑预言家身份，但作为已知狼人，他的逻辑明显矛盾——真预言家会主动分享有限信息以稳定局势，而假预言家往往回避细节或制造混乱。王者的发言恰恰暴露了他试图转移视线、诱导好人内讧的意图。我分析概率：假预言家成功率低于20%，而王者的行为模式高度符合狼人试探策略。建议好人聚焦于混沌和王者这两个高危目标。后续我将用更多神启指引方向，但绝不会在此时暴露全部身份，以免成为优先击杀目标。"
+      }
+    },
+    {
+      "timestamp": 1758637107.5701325,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "宇轩",
+      "content": "各位好，经过昨晚的神圣查验，我确认混沌是狼人，这为真相奠定了基石。现在，王者质疑预言家身份，但作为已知狼人，他的逻辑明显矛盾——真预言家会主动分享有限信息以稳定局势，而假预言家往往回避细节或制造混乱。王者的发言恰恰暴露了他试图转移视线、诱导好人内讧的意图。我分析概率：假预言家成功率低于20%，而王者的行为模式高度符合狼人试探策略。建议好人聚焦于混沌和王者这两个高危目标。后续我将用更多神启指引方向，但绝不会在此时暴露全部身份，以免成为优先击杀目标。",
+      "metadata": {
+        "speech_count": 2,
+        "content": "各位好，经过昨晚的神圣查验，我确认混沌是狼人，这为真相奠定了基石。现在，王者质疑预言家身份，但作为已知狼人，他的逻辑明显矛盾——真预言家会主动分享有限信息以稳定局势，而假预言家往往回避细节或制造混乱。王者的发言恰恰暴露了他试图转移视线、诱导好人内讧的意图。我分析概率：假预言家成功率低于20%，而王者的行为模式高度符合狼人试探策略。建议好人聚焦于混沌和王者这两个高危目标。后续我将用更多神启指引方向，但绝不会在此时暴露全部身份，以免成为优先击杀目标。"
+      }
+    },
+    {
+      "timestamp": 1758637138.603832,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "混沌",
+      "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。",
+      "metadata": {
+        "speech_count": 1,
+        "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。"
+      }
+    }
+  ],
+  "last_updated": 1758637138.6049728
+}

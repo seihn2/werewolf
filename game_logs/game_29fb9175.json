@@ -1,0 +1,166 @@
+{
+  "game_id": "29fb9175",
+  "events": [
+    {
+      "timestamp": 1758635704.5323427,
+      "round_number": 0,
+      "phase": "preparation",
+      "event_type": "game_start",
+      "player_name": null,
+      "content": "游戏开始，参与玩家：AI玩家1(werewolf), AI玩家2(witch), AI玩家3(werewolf), AI玩家4(villager), AI玩家5(seer), AI玩家6(villager), AI玩家7(villager), AI玩家8(villager), AI玩家9(werewolf)",
+      "metadata": {
+        "players": [
+          {
+            "name": "AI玩家1",
+            "role": "werewolf"
+          },
+          {
+            "name": "AI玩家2",
+            "role": "witch"
+          },
+          {
+            "name": "AI玩家3",
+            "role": "werewolf"
+          },
+          {
+            "name": "AI玩家4",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家5",
+            "role": "seer"
+          },
+          {
+            "name": "AI玩家6",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家7",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家8",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家9",
+            "role": "werewolf"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": 1758635704.5343914,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第1轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758635704.5455346,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758635704.5489151,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家1",
+      "content": "对AI玩家7使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "AI玩家7"
+      }
+    },
+    {
+      "timestamp": 1758635704.551335,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "AI玩家5查验AI玩家3，结果：bad",
+      "metadata": {
+        "seer": "AI玩家5",
+        "target": "AI玩家3",
+        "result": "bad"
+      }
+    },
+    {
+      "timestamp": 1758635704.5542386,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家2",
+      "content": "对AI玩家7使用救人",
+      "metadata": {
+        "action": "救人",
+        "target": "AI玩家7"
+      }
+    },
+    {
+      "timestamp": 1758635706.561594,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "day -> day",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758635729.9150994,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家1",
+      "content": "昨晚平安夜是个关键信号，说明女巫用了救药。我注意到AI玩家7应该是被狼人刀的目标，但被救了。这让我思考：为什么狼人首刀会选择AI玩家7？可能是在试探身份或者有特殊考量。从概率学角度看，女巫第一晚用药的概率其实不高，这说明要么女巫很谨慎，要么AI玩家7有特殊身份。我建议大家关注今天发言中谁在刻意引导对AI玩家7的怀疑，这可能是狼人在试探女巫身份。目前我保持开放态度，但会重点关注那些急于推动投票的玩家。",
+      "metadata": {
+        "speech_count": 1,
+        "content": "昨晚平安夜是个关键信号，说明女巫用了救药。我注意到AI玩家7应该是被狼人刀的目标，但被救了。这让我思考：为什么狼人首刀会选择AI玩家7？可能是在试探身份或者有特殊考量。从概率学角度看，女巫第一晚用药的概率其实不高，这说明要么女巫很谨慎，要么AI玩家7有特殊身份。我建议大家关注今天发言中谁在刻意引导对AI玩家7的怀疑，这可能是狼人在试探女巫身份。目前我保持开放态度，但会重点关注那些急于推动投票的玩家。"
+      }
+    },
+    {
+      "timestamp": 1758635729.9287848,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家1",
+      "content": "昨晚平安夜是个关键信号，说明女巫用了救药。我注意到AI玩家7应该是被狼人刀的目标，但被救了。这让我思考：为什么狼人首刀会选择AI玩家7？可能是在试探身份或者有特殊考量。从概率学角度看，女巫第一晚用药的概率其实不高，这说明要么女巫很谨慎，要么AI玩家7有特殊身份。我建议大家关注今天发言中谁在刻意引导对AI玩家7的怀疑，这可能是狼人在试探女巫身份。目前我保持开放态度，但会重点关注那些急于推动投票的玩家。",
+      "metadata": {
+        "speech_count": 2,
+        "content": "昨晚平安夜是个关键信号，说明女巫用了救药。我注意到AI玩家7应该是被狼人刀的目标，但被救了。这让我思考：为什么狼人首刀会选择AI玩家7？可能是在试探身份或者有特殊考量。从概率学角度看，女巫第一晚用药的概率其实不高，这说明要么女巫很谨慎，要么AI玩家7有特殊身份。我建议大家关注今天发言中谁在刻意引导对AI玩家7的怀疑，这可能是狼人在试探女巫身份。目前我保持开放态度，但会重点关注那些急于推动投票的玩家。"
+      }
+    },
+    {
+      "timestamp": 1758635757.9329798,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家2",
+      "content": "昨晚平安夜确实值得深思。作为谨慎的观察者，我认为AI玩家1的分析存在矛盾——他表面上在分析女巫行为，却在暗示AI玩家7可能有身份，这让我警惕。一个真正的好人此刻应该更关注狼人策略而非试探女巫。我注意到AI玩家3的沉默也很可疑，结合概率学，首夜被刀的玩家往往是狼人认为的关键角色。建议今天先观察发言逻辑，重点关注那些急于带节奏或过度解读平安夜的玩家。我会保持中立立场，但绝不会放过任何可疑的细节。",
+      "metadata": {
+        "speech_count": 1,
+        "content": "昨晚平安夜确实值得深思。作为谨慎的观察者，我认为AI玩家1的分析存在矛盾——他表面上在分析女巫行为，却在暗示AI玩家7可能有身份，这让我警惕。一个真正的好人此刻应该更关注狼人策略而非试探女巫。我注意到AI玩家3的沉默也很可疑，结合概率学，首夜被刀的玩家往往是狼人认为的关键角色。建议今天先观察发言逻辑，重点关注那些急于带节奏或过度解读平安夜的玩家。我会保持中立立场，但绝不会放过任何可疑的细节。"
+      }
+    },
+    {
+      "timestamp": 1758635757.9406927,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家2",
+      "content": "昨晚平安夜确实值得深思。作为谨慎的观察者，我认为AI玩家1的分析存在矛盾——他表面上在分析女巫行为，却在暗示AI玩家7可能有身份，这让我警惕。一个真正的好人此刻应该更关注狼人策略而非试探女巫。我注意到AI玩家3的沉默也很可疑，结合概率学，首夜被刀的玩家往往是狼人认为的关键角色。建议今天先观察发言逻辑，重点关注那些急于带节奏或过度解读平安夜的玩家。我会保持中立立场，但绝不会放过任何可疑的细节。",
+      "metadata": {
+        "speech_count": 2,
+        "content": "昨晚平安夜确实值得深思。作为谨慎的观察者，我认为AI玩家1的分析存在矛盾——他表面上在分析女巫行为，却在暗示AI玩家7可能有身份，这让我警惕。一个真正的好人此刻应该更关注狼人策略而非试探女巫。我注意到AI玩家3的沉默也很可疑，结合概率学，首夜被刀的玩家往往是狼人认为的关键角色。建议今天先观察发言逻辑，重点关注那些急于带节奏或过度解读平安夜的玩家。我会保持中立立场，但绝不会放过任何可疑的细节。"
+      }
+    }
+  ],
+  "last_updated": 1758635757.9412067
+}

@@ -1,0 +1,54 @@
+{
+  "bot_id": 5,
+  "name": "子轩",
+  "role": "hunter",
+  "game_id": "91d52cc4",
+  "current_round": 1,
+  "speech_count_this_round": 0,
+  "verification_results": [],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "王者",
+      "speaker_role": "werewolf",
+      "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。",
+      "timestamp": 1758637078.6787615,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "宇轩",
+      "speaker_role": "seer",
+      "content": "各位好，经过昨晚的神圣查验，我确认混沌是狼人，这为真相奠定了基石。现在，王者质疑预言家身份，但作为已知狼人，他的逻辑明显矛盾——真预言家会主动分享有限信息以稳定局势，而假预言家往往回避细节或制造混乱。王者的发言恰恰暴露了他试图转移视线、诱导好人内讧的意图。我分析概率：假预言家成功率低于20%，而王者的行为模式高度符合狼人试探策略。建议好人聚焦于混沌和王者这两个高危目标。后续我将用更多神启指引方向，但绝不会在此时暴露全部身份，以免成为优先击杀目标。",
+      "timestamp": 1758637107.5655847,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "宇轩",
+      "speaker_role": "seer",
+      "content": "各位好，经过昨晚的神圣查验，我确认混沌是狼人，这为真相奠定了基石。现在，王者质疑预言家身份，但作为已知狼人，他的逻辑明显矛盾——真预言家会主动分享有限信息以稳定局势，而假预言家往往回避细节或制造混乱。王者的发言恰恰暴露了他试图转移视线、诱导好人内讧的意图。我分析概率：假预言家成功率低于20%，而王者的行为模式高度符合狼人试探策略。建议好人聚焦于混沌和王者这两个高危目标。后续我将用更多神启指引方向，但绝不会在此时暴露全部身份，以免成为优先击杀目标。",
+      "timestamp": 1758637107.5786426,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "混沌",
+      "speaker_role": "werewolf",
+      "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。",
+      "timestamp": 1758637138.6091745,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是子轩，真实身份是hunter。新游戏开始。",
+    "[第1轮] 第1轮开始"
+  ],
+  "last_updated": 1758637138.609195
+}

@@ -1,0 +1,46 @@
+{
+  "bot_id": 2,
+  "name": "宇轩",
+  "role": "seer",
+  "game_id": "91d52cc4",
+  "current_round": 1,
+  "speech_count_this_round": 2,
+  "verification_results": [
+    {
+      "target_player_id": 3,
+      "target_player_name": "混沌",
+      "result": "bad",
+      "round_number": 1,
+      "timestamp": 1758637046.6396744
+    }
+  ],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "王者",
+      "speaker_role": "werewolf",
+      "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。",
+      "timestamp": 1758637078.6714501,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "混沌",
+      "speaker_role": "werewolf",
+      "content": "从目前的发言来看，我认为预言家的身份存在问题。真正的预言家应该更主动地分享验人信息才对。",
+      "timestamp": 1758637138.607664,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是宇轩，真实身份是seer。新游戏开始。",
+    "[第1轮] 第1轮开始",
+    "[第1轮] 第1轮：我查验了混沌，结果是bad",
+    "[第1轮] 我选择查验混沌，结果是bad"
+  ],
+  "last_updated": 1758637138.6076872
+}

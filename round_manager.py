@@ -12,6 +12,7 @@ from enum import Enum
 from .game_logic import Role, Player, ActionType
 from .bot_memory import MemoryManager
 from .game_logger import GameLogger, EventType
+from .night_actions import NightActionManager
 
 
 class GamePhase(Enum):
@@ -44,6 +45,9 @@ class RoundManager:
         self.logger = logger
         self.conversation_manager = conversation_manager
 
+        # 初始化夜晚行动管理器
+        self.night_action_manager = NightActionManager(memory_manager, logger, conversation_manager)
+
         self.current_round = 0
         self.current_phase = GamePhase.PREPARATION
         self.alive_players: List[Player] = players.copy()
@@ -55,6 +59,11 @@ class RoundManager:
         # 特殊道具状态
         self.witch_save_used = False
         self.witch_poison_used = False
+
+    def set_player_llm_configs(self, llm_configs: Dict[int, Any]):
+        """设置玩家LLM配置到夜晚行动管理器"""
+        if hasattr(self.night_action_manager, 'llm_configs'):
+            self.night_action_manager.llm_configs = llm_configs
 
     def get_alive_players(self) -> List[Player]:
         """获取存活玩家"""
@@ -183,29 +192,46 @@ class RoundManager:
         return victim
 
     async def _seer_check(self, seer: Player):
-        """预言家查验"""
+        """预言家查验 - 使用AI决策"""
         alive_others = [p for p in self.get_alive_players() if p.id != seer.id]
         if not alive_others:
             return
 
-        # 简单策略：随机选择一个玩家查验
-        target = random.choice(alive_others)
+        # 使用AI决策选择查验目标
+        target = await self.night_action_manager.seer_check_decision(seer, alive_others)
+        if not target:
+            target = random.choice(alive_others)
+
         result = "bad" if target.role == Role.WEREWOLF else "good"
 
         # 记录到预言家记忆中
         memory = self.memory_manager.get_bot_memory(seer.id)
         if memory:
             memory.add_verification_result(target.id, target.name, result)
+            # 记录查验决策思路
+            memory.add_private_note(f"我选择查验{target.name}，结果是{result}")
 
         self.logger.log_verification(seer.name, target.name, result)
         print(f"预言家{seer.name}查验了{target.name}，结果：{result}")
 
     async def _witch_action(self, witch: Player, victim: Player) -> bool:
-        """女巫行动，返回是否救人"""
+        """女巫行动 - 使用AI决策"""
         memory = self.memory_manager.get_bot_memory(witch.id)
 
-        # 简单策略：第一次必救，之后随机决定
-        if not self.witch_save_used:
+        # 构建可用行动
+        available_actions = {
+            'can_save': not self.witch_save_used,
+            'can_poison': not self.witch_poison_used
+        }
+
+        # 使用AI决策女巫行动
+        action = await self.night_action_manager.witch_action_decision(witch, victim, available_actions)
+
+        if not action:
+            action = {'action': 'pass'}
+
+        # 执行行动
+        if action.get('action') == 'save' and available_actions['can_save']:
             self.witch_save_used = True
             if memory:
                 memory.add_private_note(f"我救了{victim.name}")
@@ -213,7 +239,20 @@ class RoundManager:
             print(f"女巫{witch.name}救了{victim.name}")
             return True
 
-        return False
+        elif action.get('action') == 'poison' and available_actions['can_poison']:
+            self.witch_poison_used = True
+            # 这里简化处理，实际需要选择目标和执行下毒
+            if memory:
+                memory.add_private_note(f"我选择下毒")
+            self.logger.log_special_action(witch.name, "下毒", "某玩家")
+            print(f"女巫{witch.name}使用了毒药")
+            return False
+
+        else:
+            if memory:
+                memory.add_private_note(f"我选择不行动，保留技能")
+            print(f"女巫{witch.name}选择不行动")
+            return False
 
     async def _run_day_discussion_phase(self):
         """运行白天讨论阶段"""
