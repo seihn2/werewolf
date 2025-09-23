@@ -92,7 +92,7 @@ class EnhancedWerewolfGameController:
             print("游戏初始化成功！")
             print("玩家配置：")
             for player in self.players:
-                print(f"  {player.name} - {player.role.value}")
+                print(f"  {player.name} - 已分配角色")
 
             return True
 
@@ -220,12 +220,12 @@ class EnhancedWerewolfGameController:
         print(f"\n📋 最终状态:")
         print(f"  存活玩家 ({len(alive_players)}人):")
         for player in alive_players:
-            print(f"    {player.name} - {player.role.value}")
+            print(f"    {player.name}")
 
         if dead_players:
             print(f"  死亡玩家 ({len(dead_players)}人):")
             for player in dead_players:
-                print(f"    {player.name} - {player.role.value}")
+                print(f"    {player.name}")
 
         # 显示游戏统计
         summary = self.logger.export_summary()

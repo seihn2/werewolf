@@ -47,10 +47,10 @@ class NightActionManager:
             return target if target else self._fallback_seer_choice(candidates)
 
         except asyncio.TimeoutError:
-            print(f"{seer.name} 预言家AI决策超时，使用随机查验")
+            print(f"{seer.name} AI决策超时，使用随机行动")
             return self._fallback_seer_choice(candidates)
         except Exception as e:
-            print(f"{seer.name} 预言家AI决策失败: {e}")
+            print(f"{seer.name} AI决策失败: {e}")
             return self._fallback_seer_choice(candidates)
 
     async def witch_action_decision(self, witch: Player, victim: Optional[Player], available_actions: Dict[str, Any]) -> Dict[str, Any]:
@@ -72,10 +72,10 @@ class NightActionManager:
             return action if action else self._fallback_witch_action(available_actions)
 
         except asyncio.TimeoutError:
-            print(f"{witch.name} 女巫AI决策超时，使用默认行动")
+            print(f"{witch.name} AI决策超时，使用默认行动")
             return self._fallback_witch_action(available_actions)
         except Exception as e:
-            print(f"{witch.name} 女巫AI决策失败: {e}")
+            print(f"{witch.name} AI决策失败: {e}")
             return self._fallback_witch_action(available_actions)
 
     async def _ai_seer_decision(self, seer: Player, memory: BotMemory, candidates: List[Player], llm_config: LLMConfig) -> Optional[Player]:

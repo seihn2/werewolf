@@ -137,7 +137,7 @@ class WerewolfGameController:
         # 预言家行动
         seers = self.game.state.get_players_by_role(Role.SEER)
         for seer in seers:
-            print(f"\n🔮 {seer.name} (预言家) 的回合")
+            print(f"\n🔮 {seer.name} 的回合")
             action = await self._get_player_action(seer, [ActionType.CHECK])
             if action:
                 night_actions.append(action)
@@ -145,7 +145,7 @@ class WerewolfGameController:
         # 女巫行动
         witches = self.game.state.get_players_by_role(Role.WITCH)
         for witch in witches:
-            print(f"\n🧙 {witch.name} (女巫) 的回合")
+            print(f"\n🧙 {witch.name} 的回合")
             available_actions = [ActionType.SAVE, ActionType.POISON]
             action = await self._get_player_action(witch, available_actions)
             if action:
@@ -310,7 +310,7 @@ class WerewolfGameController:
         eliminated = self.game.resolve_voting()
         if eliminated:
             print(f"\n⚱️ {eliminated.name} 被投票出局")
-            print(f"   真实身份: {eliminated.role.value}")
+            # 角色身份在游戏结束时才公开
         else:
             print(f"\n🤝 没有人被投票出局")
 
@@ -331,7 +331,7 @@ class WerewolfGameController:
         for i, config in enumerate(self.player_configs):
             player = self.game.state.players[i]
             llm_name = config["llm_config"]
-            print(f"  {player.name}: {player.role.value} (使用 {llm_name})")
+            print(f"  {player.name}: 已分配角色 (使用 {llm_name})")
 
     def _print_game_result(self):
         """打印游戏结果"""

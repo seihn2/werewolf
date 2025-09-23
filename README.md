@@ -9,21 +9,35 @@
 - **完整游戏规则**: 实现标准狼人杀规则，支持6-12人局
 - **灵活配置管理**: 用户可设置n个API，程序提供n个API调用接口
 - **实时游戏日志**: 详细记录游戏过程和AI决策思路
+- **隐私保护**: 严格遵循身份隐藏规则，防止信息泄露
 
 ## 📦 项目结构
 
 ```
 werewolf/
-├── __init__.py              # 模块初始化
-├── llm_manager.py          # 多LLM API管理器
-├── game_logic.py           # 狼人杀游戏逻辑
-├── ai_player.py            # AI玩家实现
-├── game_controller.py      # 游戏控制器
-├── config_manager.py       # 配置管理工具
-├── main.py                 # 主启动脚本
-├── README.md               # 使用说明
-├── llm_configs.json        # LLM配置文件
-└── game_configs.json       # 游戏配置文件
+├── __init__.py                    # 模块初始化
+├── main.py                       # 主启动脚本
+├── enhanced_game_controller.py   # 增强版游戏控制器
+├── game_controller.py            # 基础游戏控制器
+├── round_manager.py              # 游戏轮次管理器
+├── game_logic.py                 # 狼人杀游戏逻辑
+├── ai_player.py                  # AI玩家实现
+├── bot_memory.py                 # AI记忆系统
+├── conversation_manager.py       # 对话管理系统
+├── night_actions.py              # 夜间行动管理
+├── llm_manager.py                # 多LLM API管理器
+├── api_config.py                 # API配置管理
+├── config_manager.py             # 配置管理工具
+├── game_logger.py                # 游戏日志记录
+├── name_generator.py             # 随机名字生成器
+├── change_model.py               # 批量模型更换工具
+├── simple_update.py              # 简单模型更新工具
+├── bot_generator.py              # Bot批量生成工具
+├── simple_bot_gen.py             # 简单Bot生成工具
+├── update_models.py              # 模型更新工具
+├── fix_encoding.py               # 编码问题修复工具
+├── api_configs.json              # API配置文件
+└── README.md                     # 使用说明
 ```
 
 ## 🚀 快速开始
@@ -36,20 +50,21 @@ pip install aiohttp asyncio
 
 ### 2. 配置API密钥
 
-运行配置管理器：
+编辑 `api_configs.json` 文件，添加至少6个不同的LLM API配置：
 
-```bash
-cd werewolf
-python config_manager.py
+```json
+{
+  "genshin1": {
+    "name": "genshin1",
+    "provider": "siliconflow",
+    "api_key": "your-api-key",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+    "description": "",
+    "is_default": true
+  }
+}
 ```
-
-在配置管理器中添加至少6个不同的LLM API配置，例如：
-
-- **GPT-4o**: OpenAI的GPT-4o模型
-- **Claude-3.5**: Anthropic的Claude-3.5-Sonnet
-- **DeepSeek**: DeepSeek的聊天模型
-- **通义千问**: 通过硅基流动调用的Qwen模型
-- **其他模型**: 任何兼容OpenAI格式的API
 
 ### 3. 启动游戏
 
@@ -57,51 +72,85 @@ python config_manager.py
 python main.py
 ```
 
-选择"快速开始游戏"或"创建自定义游戏"。
+选择对应的游戏模式开始AI狼人杀游戏。
 
-## 🔧 配置说明
+## 🛠️ 工具说明
 
-### LLM配置格式
+### 核心游戏文件
 
-每个LLM配置包含以下信息：
+| 文件 | 作用 | 说明 |
+|------|------|------|
+| `main.py` | 主启动脚本 | 游戏入口，提供菜单选择和游戏启动 |
+| `enhanced_game_controller.py` | 增强版游戏控制器 | 支持N人局，完整投票系统，增强AI发言 |
+| `game_controller.py` | 基础游戏控制器 | 基础版游戏流程控制 |
+| `round_manager.py` | 轮次管理器 | 管理游戏的夜晚和白天阶段 |
+| `game_logic.py` | 游戏逻辑 | 核心狼人杀规则和状态管理 |
+| `ai_player.py` | AI玩家 | AI角色扮演和决策系统 |
+| `night_actions.py` | 夜间行动 | AI控制的预言家查验、女巫行动 |
 
-```json
-{
-  "name": "配置名称",
-  "provider": "openai|anthropic|deepseek|siliconflow|custom",
-  "api_key": "你的API密钥",
-  "model": "模型名称",
-  "base_url": "API地址(可选)",
-  "max_tokens": 2000,
-  "temperature": 0.8,
-  "enabled": true,
-  "description": "配置描述"
-}
+### 配置和管理工具
+
+| 文件 | 作用 | 使用方法 |
+|------|------|----------|
+| `config_manager.py` | 配置管理界面 | `python config_manager.py` - 图形化配置管理 |
+| `api_config.py` | API配置核心 | 提供配置读写和管理功能 |
+| `change_model.py` | 批量模型更换 | `python change_model.py <模型名> [提供商]` |
+| `simple_update.py` | 简单模型更新 | 快速更新所有Bot到指定模型 |
+| `bot_generator.py` | Bot批量生成 | 生成多个Bot配置 |
+| `simple_bot_gen.py` | 简单Bot生成 | 快速生成Bot配置 |
+| `update_models.py` | 模型更新工具 | 各种模型更新操作 |
+
+### 辅助系统
+
+| 文件 | 作用 | 说明 |
+|------|------|------|
+| `bot_memory.py` | AI记忆系统 | 管理AI的游戏记忆和历史信息 |
+| `conversation_manager.py` | 对话管理 | 处理AI之间的对话和发言 |
+| `game_logger.py` | 游戏日志 | 记录游戏过程和事件 |
+| `name_generator.py` | 名字生成器 | 提供100个随机AI玩家名字 |
+| `llm_manager.py` | LLM管理器 | 多LLM API调用和管理 |
+| `fix_encoding.py` | 编码修复 | 修复中文编码问题 |
+
+## 🔧 工具使用示例
+
+### 1. 批量更换AI模型
+
+```bash
+# 更换所有Bot到Qwen模型
+python change_model.py Qwen/Qwen3-Next-80B-A3B-Instruct
+
+# 更换到OpenAI模型
+python change_model.py gpt-4o-mini openai
+
+# 查看当前配置状态
+python change_model.py --status
+
+# 查看可用模型列表
+python change_model.py --list
 ```
 
-### 支持的API提供商
+### 2. 配置管理
 
-| 提供商 | 说明 | 示例模型 |
-|--------|------|----------|
-| OpenAI | GPT系列模型 | gpt-4o, gpt-4o-mini |
-| Anthropic | Claude系列模型 | claude-3-5-sonnet-20241022 |
-| DeepSeek | DeepSeek系列模型 | deepseek-chat |
-| SiliconFlow | 硅基流动平台 | Qwen/Qwen2.5-72B-Instruct |
-| Custom | 自定义兼容API | 任何OpenAI格式API |
+```bash
+# 启动配置管理界面
+python config_manager.py
+```
 
-### 游戏配置格式
+### 3. 快速更新模型
 
-```json
-{
-  "name": "游戏配置名称",
-  "players": [
-    {
-      "name": "玩家名称",
-      "llm_config": "对应的LLM配置名称"
-    }
-  ],
-  "created_at": 1234567890
-}
+```bash
+# 运行简单更新脚本
+python simple_update.py
+```
+
+### 4. 生成Bot配置
+
+```bash
+# 生成多个Bot配置
+python bot_generator.py
+
+# 简单Bot生成
+python simple_bot_gen.py
 ```
 
 ## 🎮 游戏规则
@@ -110,175 +159,108 @@ python main.py
 
 - **村民**: 通过投票找出狼人
 - **狼人**: 夜晚击杀好人，白天伪装
-- **预言家**: 夜晚查验玩家身份
-- **女巫**: 拥有解药和毒药
-- **猎人**: 死亡时可开枪带人
-- **守卫**: 夜晚保护玩家
+- **预言家**: 夜晚查验玩家身份（AI自动决策）
+- **女巫**: 拥有解药和毒药（AI自动决策）
+
+### 支持人数
+
+- **6人局**: 2狼人 + 4好人（1预言家 + 1女巫 + 2村民）
+- **7人局**: 2狼人 + 5好人（1预言家 + 1女巫 + 3村民）
+- **8人局**: 3狼人 + 5好人（1预言家 + 1女巫 + 3村民）
+- **9人局**: 3狼人 + 6好人（1预言家 + 1女巫 + 4村民）
+- **10人局**: 4狼人 + 6好人（1预言家 + 1女巫 + 4村民）
+- **11人局**: 4狼人 + 7好人（1预言家 + 1女巫 + 5村民）
+- **12人局**: 4狼人 + 8好人（1预言家 + 1女巫 + 6村民）
 
 ### 游戏流程
 
 1. **夜晚阶段**: 各角色秘密行动
-   - 狼人讨论并击杀目标
-   - 预言家查验玩家身份
-   - 女巫选择救人或下毒
-   - 守卫保护玩家
+   - 狼人讨论并击杀目标（AI自动决策）
+   - 预言家查验玩家身份（AI自动选择目标）
+   - 女巫选择救人或下毒（AI自动决策）
 
 2. **白天阶段**: 公开讨论
-   - 宣布夜晚结果
-   - 玩家自由发言讨论
-   - AI根据角色特点发言
+   - 宣布夜晚结果（不泄露角色身份）
+   - AI玩家发言讨论（强制长篇发言）
+   - 每个AI都会基于角色身份发言
 
 3. **投票阶段**: 投票出局
-   - 每个玩家投票
+   - 每个AI玩家投票（AI自动决策）
    - 得票最多者出局
+   - 出局时不公开身份
 
 ### 胜利条件
 
 - **好人获胜**: 所有狼人被投票出局
 - **狼人获胜**: 狼人数量≥好人数量
 
+### 隐私保护
+
+- 游戏开始时不显示角色分配
+- 夜间行动不泄露角色身份
+- 预言家查验结果只对预言家可见
+- 投票出局时不立即公开身份
+- 只在游戏结束时公开所有角色
+
 ## 🤖 AI特点
 
 ### 智能决策
 
-AI玩家会根据以下因素做出决策：
+AI玩家具备以下能力：
 
-1. **角色特点**: 严格按照角色身份行动
-2. **游戏状态**: 分析当前局势和威胁
-3. **历史信息**: 记忆之前的行动和发言
-4. **策略思考**: 考虑长期和短期利益
-5. **心理博弈**: 通过发言影响其他玩家
+1. **角色认知**: 明确自己的角色和目标
+2. **策略思考**: 根据游戏状态制定策略
+3. **记忆系统**: 记住游戏过程中的重要信息
+4. **伪装能力**: 狼人会伪装成好人
+5. **推理分析**: 根据发言和投票分析其他玩家
+6. **长篇发言**: 每次发言都包含丰富的分析内容
 
-### 角色扮演
+### 夜间自动行动
 
-每个角色都有专门的策略指导：
+- **预言家**: AI自动选择查验目标，优先可疑玩家
+- **女巫**: AI自动决定是否使用解药和毒药
+- **狼人**: AI协商选择击杀目标
 
-- **狼人**: 伪装村民，保护同伴，制造混乱
-- **预言家**: 查验可疑玩家，适时跳身份
-- **女巫**: 合理使用解药毒药
-- **村民**: 观察分析，跟随预言家指引
-- **猎人**: 选择合适时机开枪
-- **守卫**: 保护重要角色
+## 📊 API配置
 
-## 📊 使用示例
+### 配置文件格式 (`api_configs.json`)
 
-### 基本使用
-
-```python
-from werewolf.game_controller import WerewolfGameController
-
-# 配置6个AI玩家
-player_configs = [
-    {"name": "GPT玩家", "llm_config": "gpt4o"},
-    {"name": "Claude玩家", "llm_config": "claude"},
-    {"name": "DeepSeek玩家", "llm_config": "deepseek"},
-    {"name": "Qwen玩家", "llm_config": "qwen"},
-    {"name": "本地模型", "llm_config": "local_model"},
-    {"name": "自定义AI", "llm_config": "custom_ai"}
-]
-
-# 创建并启动游戏
-controller = WerewolfGameController(player_configs)
-await controller.initialize_game()
-await controller.start_game()
+```json
+{
+  "配置名": {
+    "name": "配置名",
+    "provider": "siliconflow|openai|anthropic",
+    "api_key": "你的API密钥",
+    "base_url": "API基础URL",
+    "model": "模型名称",
+    "description": "配置描述",
+    "is_default": true/false
+  }
+}
 ```
 
-### 配置管理
+### 支持的提供商
 
-```python
-from werewolf.llm_manager import MultiLLMManager, LLMConfig, APIProvider
-
-# 创建管理器
-manager = MultiLLMManager()
-
-# 添加配置
-config = LLMConfig(
-    name="my_gpt",
-    provider=APIProvider.OPENAI,
-    api_key="sk-your-api-key",
-    model="gpt-4o-mini",
-    description="我的GPT配置"
-)
-
-manager.add_config(config)
-
-# 测试配置
-await manager.test_config("my_gpt")
-```
-
-## 🛠️ 高级功能
-
-### 批量测试不同AI能力
-
-通过配置不同的AI模型，可以测试：
-
-1. **不同模型的狼人杀策略差异**
-2. **各模型的逻辑推理能力**
-3. **角色扮演的一致性**
-4. **长期记忆和策略规划**
-
-### 自定义AI行为
-
-可以通过修改`ai_player.py`中的提示词来调整AI行为：
-
-- 修改角色指导策略
-- 调整决策权重
-- 自定义发言风格
-- 优化记忆机制
-
-### 扩展游戏规则
-
-在`game_logic.py`中可以扩展：
-
-- 添加新角色
-- 修改胜利条件
-- 增加特殊事件
-- 自定义游戏模式
+| 提供商 | Provider值 | 常用模型 |
+|--------|------------|----------|
+| SiliconFlow | `siliconflow` | `Qwen/Qwen3-Next-80B-A3B-Instruct` |
+| OpenAI | `openai` | `gpt-4o`, `gpt-4o-mini` |
+| Anthropic | `anthropic` | `claude-3-5-sonnet-20241022` |
 
 ## 🔍 故障排查
 
 ### 常见问题
 
-1. **API调用失败**
-   - 检查API密钥是否正确
-   - 确认账户余额充足
-   - 验证网络连接
+1. **编码错误**: 运行 `python fix_encoding.py` 修复
+2. **API调用失败**: 检查API密钥和网络连接
+3. **模型不支持**: 使用 `change_model.py --list` 查看支持的模型
+4. **游戏卡住**: 检查AI响应超时设置
 
-2. **配置不生效**
-   - 确保配置已启用
-   - 检查配置文件格式
-   - 重启程序重新加载
+### 调试技巧
 
-3. **游戏卡住**
-   - 查看控制台错误信息
-   - 检查AI响应格式
-   - 降低并发数量
-
-### 调试模式
-
-在`ai_player.py`中可以开启调试：
-
-```python
-# 显示完整AI响应
-print(f"AI完整响应: {response}")
-
-# 记录决策过程
-self._add_to_memory(f"决策过程: {reasoning}")
-```
-
-## 📈 性能优化
-
-### 并发控制
-
-- 夜晚行动支持并发执行
-- 合理设置思考时间
-- 优化API调用频率
-
-### 内存管理
-
-- 限制AI记忆条目数量
-- 定期清理游戏日志
-- 优化状态存储
+- 查看控制台输出的详细错误信息
+- 使用 `--status` 参数检查配置状态
+- 确保至少有6个有效的API配置
 
 ## 🤝 贡献指南
 

@@ -211,8 +211,10 @@ class RoundManager:
             # 记录查验决策思路
             memory.add_private_note(f"我选择查验{target.name}，结果是{result}")
 
+        # 将查验结果记录到日志，但不公开显示
         self.logger.log_verification(seer.name, target.name, result)
-        print(f"预言家{seer.name}查验了{target.name}，结果：{result}")
+        # 只显示预言家进行了查验，不泄露具体目标和结果
+        print(f"预言家{seer.name}进行了查验")
 
     async def _witch_action(self, witch: Player, victim: Player) -> bool:
         """女巫行动 - 使用AI决策"""
