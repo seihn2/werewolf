@@ -1,0 +1,17 @@
+{
+  "bot_id": 5,
+  "name": "AI玩家5",
+  "role": "villager",
+  "game_id": "09d81fbd",
+  "current_round": 0,
+  "speech_count_this_round": 0,
+  "verification_results": [],
+  "conversation_history": [],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是AI玩家5，真实身份是villager。新游戏开始。",
+    "[第0轮] 这是一条测试笔记"
+  ],
+  "last_updated": 1758619809.8876207
+}

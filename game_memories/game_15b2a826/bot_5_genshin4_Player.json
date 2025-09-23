@@ -1,0 +1,109 @@
+{
+  "bot_id": 5,
+  "name": "genshin4_Player",
+  "role": "villager",
+  "game_id": "15b2a826",
+  "current_round": 2,
+  "speech_count_this_round": 0,
+  "verification_results": [],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "2",
+      "speaker_role": "villager",
+      "content": "我支持预言家的判断",
+      "timestamp": 1758622203.8533192,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "3",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758622204.8850985,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "genshin2_Player",
+      "speaker_role": "witch",
+      "content": "我觉得我们需要更多信息",
+      "timestamp": 1758622205.9028091,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "genshin3_Player",
+      "speaker_role": "seer",
+      "content": "我是预言家，昨晚验了一个人",
+      "timestamp": 1758622206.9278321,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "genshin5_Player",
+      "speaker_role": "werewolf",
+      "content": "我觉得大家应该仔细分析昨晚的情况",
+      "timestamp": 1758622208.9678257,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "2",
+      "speaker_role": "villager",
+      "content": "我是村民，我们要找出狼人",
+      "timestamp": 1758622209.9792,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "3",
+      "speaker_role": "werewolf",
+      "content": "我觉得大家应该仔细分析昨晚的情况",
+      "timestamp": 1758622211.0341835,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "genshin2_Player",
+      "speaker_role": "witch",
+      "content": "我会在关键时刻使用我的能力",
+      "timestamp": 1758622212.0722086,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "genshin3_Player",
+      "speaker_role": "seer",
+      "content": "我是预言家，昨晚验了一个人",
+      "timestamp": 1758622213.0889494,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "genshin5_Player",
+      "speaker_role": "werewolf",
+      "content": "我觉得大家应该仔细分析昨晚的情况",
+      "timestamp": 1758622215.127407,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是genshin4_Player，真实身份是villager。新游戏开始。",
+    "[第1轮] 第1轮开始",
+    "[第2轮] 第2轮开始"
+  ],
+  "last_updated": 1758622219.2077386
+}

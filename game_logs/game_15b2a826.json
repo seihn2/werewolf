@@ -1,0 +1,410 @@
+{
+  "game_id": "15b2a826",
+  "events": [
+    {
+      "timestamp": 1758622201.809333,
+      "round_number": 0,
+      "phase": "preparation",
+      "event_type": "game_start",
+      "player_name": null,
+      "content": "游戏开始，参与玩家：2(villager), 3(werewolf), genshin2_Player(witch), genshin3_Player(seer), genshin4_Player(villager), genshin5_Player(werewolf)",
+      "metadata": {
+        "players": [
+          {
+            "name": "2",
+            "role": "villager"
+          },
+          {
+            "name": "3",
+            "role": "werewolf"
+          },
+          {
+            "name": "genshin2_Player",
+            "role": "witch"
+          },
+          {
+            "name": "genshin3_Player",
+            "role": "seer"
+          },
+          {
+            "name": "genshin4_Player",
+            "role": "villager"
+          },
+          {
+            "name": "genshin5_Player",
+            "role": "werewolf"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": 1758622201.81181,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第1轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758622201.819333,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758622201.821643,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "3",
+      "content": "对2使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "2"
+      }
+    },
+    {
+      "timestamp": 1758622201.8238926,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "genshin3_Player查验2，结果：good",
+      "metadata": {
+        "seer": "genshin3_Player",
+        "target": "2",
+        "result": "good"
+      }
+    },
+    {
+      "timestamp": 1758622201.8255835,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "genshin2_Player",
+      "content": "对2使用救人",
+      "metadata": {
+        "action": "救人",
+        "target": "2"
+      }
+    },
+    {
+      "timestamp": 1758622203.838147,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "day -> day",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758622203.842265,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "2",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758622204.8683045,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "3",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758622205.898113,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin2_Player",
+      "content": "我觉得我们需要更多信息",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我觉得我们需要更多信息"
+      }
+    },
+    {
+      "timestamp": 1758622206.9205709,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin3_Player",
+      "content": "我是预言家，昨晚验了一个人",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我是预言家，昨晚验了一个人"
+      }
+    },
+    {
+      "timestamp": 1758622207.9450934,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin4_Player",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758622208.959474,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin5_Player",
+      "content": "我觉得大家应该仔细分析昨晚的情况",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我觉得大家应该仔细分析昨晚的情况"
+      }
+    },
+    {
+      "timestamp": 1758622209.9719336,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "2",
+      "content": "我是村民，我们要找出狼人",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我是村民，我们要找出狼人"
+      }
+    },
+    {
+      "timestamp": 1758622211.0022848,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "3",
+      "content": "我觉得大家应该仔细分析昨晚的情况",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我觉得大家应该仔细分析昨晚的情况"
+      }
+    },
+    {
+      "timestamp": 1758622212.0670679,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin2_Player",
+      "content": "我会在关键时刻使用我的能力",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我会在关键时刻使用我的能力"
+      }
+    },
+    {
+      "timestamp": 1758622213.0845995,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin3_Player",
+      "content": "我是预言家，昨晚验了一个人",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我是预言家，昨晚验了一个人"
+      }
+    },
+    {
+      "timestamp": 1758622214.105531,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin4_Player",
+      "content": "我是村民，我们要找出狼人",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我是村民，我们要找出狼人"
+      }
+    },
+    {
+      "timestamp": 1758622215.1162956,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "genshin5_Player",
+      "content": "我觉得大家应该仔细分析昨晚的情况",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我觉得大家应该仔细分析昨晚的情况"
+      }
+    },
+    {
+      "timestamp": 1758622216.140056,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "voting -> voting",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758622216.1434977,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "2",
+      "content": "投票给genshin5_Player",
+      "metadata": {
+        "voter": "2",
+        "target": "genshin5_Player"
+      }
+    },
+    {
+      "timestamp": 1758622216.1470938,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "3",
+      "content": "投票给genshin4_Player",
+      "metadata": {
+        "voter": "3",
+        "target": "genshin4_Player"
+      }
+    },
+    {
+      "timestamp": 1758622216.148618,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "genshin2_Player",
+      "content": "投票给3",
+      "metadata": {
+        "voter": "genshin2_Player",
+        "target": "3"
+      }
+    },
+    {
+      "timestamp": 1758622216.1528125,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "genshin3_Player",
+      "content": "投票给3",
+      "metadata": {
+        "voter": "genshin3_Player",
+        "target": "3"
+      }
+    },
+    {
+      "timestamp": 1758622216.1556778,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "genshin4_Player",
+      "content": "投票给genshin5_Player",
+      "metadata": {
+        "voter": "genshin4_Player",
+        "target": "genshin5_Player"
+      }
+    },
+    {
+      "timestamp": 1758622216.1660879,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "genshin5_Player",
+      "content": "投票给genshin4_Player",
+      "metadata": {
+        "voter": "genshin5_Player",
+        "target": "genshin4_Player"
+      }
+    },
+    {
+      "timestamp": 1758622216.1905897,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "elimination",
+      "player_name": null,
+      "content": "genshin4_Player被投票淘汰（得票2票）",
+      "metadata": {
+        "eliminated": "genshin4_Player",
+        "votes": 2
+      }
+    },
+    {
+      "timestamp": 1758622219.1983435,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第2轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758622219.209651,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758622219.213308,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "3",
+      "content": "对2使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "2"
+      }
+    },
+    {
+      "timestamp": 1758622219.2225933,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "genshin3_Player查验genshin2_Player，结果：good",
+      "metadata": {
+        "seer": "genshin3_Player",
+        "target": "genshin2_Player",
+        "result": "good"
+      }
+    },
+    {
+      "timestamp": 1758622219.2298112,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "death",
+      "player_name": null,
+      "content": "2被狼人杀害",
+      "metadata": {
+        "victim": "2",
+        "cause": "狼人杀害"
+      }
+    },
+    {
+      "timestamp": 1758622221.246538,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "game_end",
+      "player_name": null,
+      "content": "游戏结束，狼人获胜。原因：狼人数量占优",
+      "metadata": {
+        "winner": "狼人",
+        "reason": "狼人数量占优"
+      }
+    }
+  ],
+  "last_updated": 1758622221.248089
+}

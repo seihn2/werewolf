@@ -1,0 +1,39 @@
+{
+  "bot_id": 1,
+  "name": "测试玩家",
+  "role": "seer",
+  "game_id": "test_game",
+  "current_round": 1,
+  "speech_count_this_round": 0,
+  "verification_results": [
+    {
+      "target_player_id": 2,
+      "target_player_name": "玩家2",
+      "result": "bad",
+      "round_number": 1,
+      "timestamp": 1758619809.897967
+    }
+  ],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "玩家3",
+      "speaker_role": "村民",
+      "content": "我觉得玩家2很可疑",
+      "timestamp": 1758619809.8992717,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {
+    "玩家2": 0.8
+  },
+  "private_notes": [
+    "[第0轮] 我是测试玩家，真实身份是seer。新游戏开始。",
+    "[第1轮] 第1轮开始",
+    "[第1轮] 第1轮：我查验了玩家2，结果是bad",
+    "[第1轮] 玩家2可能是狼人"
+  ],
+  "last_updated": 1758619809.9005039
+}

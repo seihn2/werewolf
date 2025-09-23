@@ -1,0 +1,109 @@
+{
+  "bot_id": 4,
+  "name": "AI玩家4",
+  "role": "villager",
+  "game_id": "743c86c2",
+  "current_round": 2,
+  "speech_count_this_round": 0,
+  "verification_results": [],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家1",
+      "speaker_role": "werewolf",
+      "content": "我们要团结起来找出真正的狼人",
+      "timestamp": 1758620621.8207278,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "witch",
+      "content": "我会在关键时刻使用我的能力",
+      "timestamp": 1758620622.8388608,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家3",
+      "speaker_role": "villager",
+      "content": "我是村民，我们要找出狼人",
+      "timestamp": 1758620623.8753538,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家5",
+      "speaker_role": "seer",
+      "content": "根据我的查验结果，我有重要信息要分享",
+      "timestamp": 1758620625.909133,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家6",
+      "speaker_role": "werewolf",
+      "content": "我们要团结起来找出真正的狼人",
+      "timestamp": 1758620626.9256732,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家1",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758620627.9426649,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "witch",
+      "content": "我觉得我们需要更多信息",
+      "timestamp": 1758620628.9511907,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家3",
+      "speaker_role": "villager",
+      "content": "我是村民，我们要找出狼人",
+      "timestamp": 1758620629.9642973,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家5",
+      "speaker_role": "seer",
+      "content": "根据我的查验结果，我有重要信息要分享",
+      "timestamp": 1758620631.9882061,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家6",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758620633.003647,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是AI玩家4，真实身份是villager。新游戏开始。",
+    "[第1轮] 第1轮开始",
+    "[第2轮] 第2轮开始"
+  ],
+  "last_updated": 1758620637.0439777
+}

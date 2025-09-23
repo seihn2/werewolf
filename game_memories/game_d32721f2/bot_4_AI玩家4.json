@@ -1,0 +1,163 @@
+{
+  "bot_id": 4,
+  "name": "AI玩家4",
+  "role": "witch",
+  "game_id": "d32721f2",
+  "current_round": 1,
+  "speech_count_this_round": 2,
+  "verification_results": [],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家1",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758634165.4493153,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "seer",
+      "content": "大家要相信我的判断",
+      "timestamp": 1758634166.45862,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家3",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758634167.4735286,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家5",
+      "speaker_role": "villager",
+      "content": "我是村民，我们要找出狼人",
+      "timestamp": 1758634169.9769692,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家6",
+      "speaker_role": "villager",
+      "content": "我支持预言家的判断",
+      "timestamp": 1758634170.9847322,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家7",
+      "speaker_role": "villager",
+      "content": "我觉得某些人的发言很可疑",
+      "timestamp": 1758634172.016326,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家8",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758634173.034627,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家9",
+      "speaker_role": "villager",
+      "content": "我支持预言家的判断",
+      "timestamp": 1758634174.0564985,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家1",
+      "speaker_role": "werewolf",
+      "content": "我们要团结起来找出真正的狼人",
+      "timestamp": 1758634175.0803263,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "seer",
+      "content": "大家要相信我的判断",
+      "timestamp": 1758634176.0925946,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家3",
+      "speaker_role": "werewolf",
+      "content": "我怀疑预言家可能是假的",
+      "timestamp": 1758634177.1164293,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家5",
+      "speaker_role": "villager",
+      "content": "我支持预言家的判断",
+      "timestamp": 1758634179.190419,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家6",
+      "speaker_role": "villager",
+      "content": "我觉得某些人的发言很可疑",
+      "timestamp": 1758634180.249879,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家7",
+      "speaker_role": "villager",
+      "content": "我觉得某些人的发言很可疑",
+      "timestamp": 1758634181.2669036,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家8",
+      "speaker_role": "werewolf",
+      "content": "我们要团结起来找出真正的狼人",
+      "timestamp": 1758634182.2909913,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家9",
+      "speaker_role": "villager",
+      "content": "我支持预言家的判断",
+      "timestamp": 1758634183.3047633,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是AI玩家4，真实身份是witch。新游戏开始。",
+    "[第1轮] 第1轮开始",
+    "[第1轮] 我救了AI玩家2"
+  ],
+  "last_updated": 1758634183.3047974
+}

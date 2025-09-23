@@ -1,0 +1,39 @@
+
+========================================
+AI狼人杀游戏日志
+游戏ID: 15b2a826
+开始时间: 2025-09-23 18:10:01
+========================================
+18:10:01 [preparation] 系统：游戏开始，参与玩家：2(villager), 3(werewolf), genshin2_Player(witch), genshin3_Player(seer), genshin4_Player(villager), genshin5_Player(werewolf)
+18:10:01 [第1轮-night] 系统：第1轮开始
+18:10:01 [第1轮-night] 系统：night -> night
+18:10:01 [第1轮-night] 3：对2使用杀人
+18:10:01 [第1轮-night] 系统：genshin3_Player查验2，结果：good
+18:10:01 [第1轮-night] genshin2_Player：对2使用救人
+18:10:03 [第1轮-day] 系统：day -> day
+18:10:03 [第1轮-day] 2：我支持预言家的判断
+18:10:04 [第1轮-day] 3：我怀疑预言家可能是假的
+18:10:05 [第1轮-day] genshin2_Player：我觉得我们需要更多信息
+18:10:06 [第1轮-day] genshin3_Player：我是预言家，昨晚验了一个人
+18:10:07 [第1轮-day] genshin4_Player：我支持预言家的判断
+18:10:08 [第1轮-day] genshin5_Player：我觉得大家应该仔细分析昨晚的情况
+18:10:09 [第1轮-day] 2：我是村民，我们要找出狼人
+18:10:11 [第1轮-day] 3：我觉得大家应该仔细分析昨晚的情况
+18:10:12 [第1轮-day] genshin2_Player：我会在关键时刻使用我的能力
+18:10:13 [第1轮-day] genshin3_Player：我是预言家，昨晚验了一个人
+18:10:14 [第1轮-day] genshin4_Player：我是村民，我们要找出狼人
+18:10:15 [第1轮-day] genshin5_Player：我觉得大家应该仔细分析昨晚的情况
+18:10:16 [第1轮-voting] 系统：voting -> voting
+18:10:16 [第1轮-voting] 2：投票给genshin5_Player
+18:10:16 [第1轮-voting] 3：投票给genshin4_Player
+18:10:16 [第1轮-voting] genshin2_Player：投票给3
+18:10:16 [第1轮-voting] genshin3_Player：投票给3
+18:10:16 [第1轮-voting] genshin4_Player：投票给genshin5_Player
+18:10:16 [第1轮-voting] genshin5_Player：投票给genshin4_Player
+18:10:16 [第1轮-voting] 系统：genshin4_Player被投票淘汰（得票2票）
+18:10:19 [第2轮-night] 系统：第2轮开始
+18:10:19 [第2轮-night] 系统：night -> night
+18:10:19 [第2轮-night] 3：对2使用杀人
+18:10:19 [第2轮-night] 系统：genshin3_Player查验genshin2_Player，结果：good
+18:10:19 [第2轮-night] 系统：2被狼人杀害
+18:10:21 [第2轮-night] 系统：游戏结束，狼人获胜。原因：狼人数量占优

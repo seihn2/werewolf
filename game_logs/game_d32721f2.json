@@ -1,0 +1,343 @@
+{
+  "game_id": "d32721f2",
+  "events": [
+    {
+      "timestamp": 1758634163.4112012,
+      "round_number": 0,
+      "phase": "preparation",
+      "event_type": "game_start",
+      "player_name": null,
+      "content": "游戏开始，参与玩家：AI玩家1(werewolf), AI玩家2(seer), AI玩家3(werewolf), AI玩家4(witch), AI玩家5(villager), AI玩家6(villager), AI玩家7(villager), AI玩家8(werewolf), AI玩家9(villager)",
+      "metadata": {
+        "players": [
+          {
+            "name": "AI玩家1",
+            "role": "werewolf"
+          },
+          {
+            "name": "AI玩家2",
+            "role": "seer"
+          },
+          {
+            "name": "AI玩家3",
+            "role": "werewolf"
+          },
+          {
+            "name": "AI玩家4",
+            "role": "witch"
+          },
+          {
+            "name": "AI玩家5",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家6",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家7",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家8",
+            "role": "werewolf"
+          },
+          {
+            "name": "AI玩家9",
+            "role": "villager"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": 1758634163.4131584,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第1轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758634163.423399,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758634163.426973,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家1",
+      "content": "对AI玩家2使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "AI玩家2"
+      }
+    },
+    {
+      "timestamp": 1758634163.4290955,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "AI玩家2查验AI玩家6，结果：good",
+      "metadata": {
+        "seer": "AI玩家2",
+        "target": "AI玩家6",
+        "result": "good"
+      }
+    },
+    {
+      "timestamp": 1758634163.431141,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家4",
+      "content": "对AI玩家2使用救人",
+      "metadata": {
+        "action": "救人",
+        "target": "AI玩家2"
+      }
+    },
+    {
+      "timestamp": 1758634165.444155,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "day -> day",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758634165.4460237,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家1",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758634166.4538739,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家2",
+      "content": "大家要相信我的判断",
+      "metadata": {
+        "speech_count": 1,
+        "content": "大家要相信我的判断"
+      }
+    },
+    {
+      "timestamp": 1758634167.4692621,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家3",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758634168.7698526,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家4",
+      "content": "我觉得我们需要更多信息",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我觉得我们需要更多信息"
+      }
+    },
+    {
+      "timestamp": 1758634169.972354,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家5",
+      "content": "我是村民，我们要找出狼人",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我是村民，我们要找出狼人"
+      }
+    },
+    {
+      "timestamp": 1758634170.980625,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家6",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758634172.011873,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家7",
+      "content": "我觉得某些人的发言很可疑",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我觉得某些人的发言很可疑"
+      }
+    },
+    {
+      "timestamp": 1758634173.0278883,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家8",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758634174.0507836,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家9",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758634175.0667405,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家1",
+      "content": "我们要团结起来找出真正的狼人",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我们要团结起来找出真正的狼人"
+      }
+    },
+    {
+      "timestamp": 1758634176.088591,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家2",
+      "content": "大家要相信我的判断",
+      "metadata": {
+        "speech_count": 2,
+        "content": "大家要相信我的判断"
+      }
+    },
+    {
+      "timestamp": 1758634177.1119785,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家3",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758634178.1230795,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家4",
+      "content": "我觉得我们需要更多信息",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我觉得我们需要更多信息"
+      }
+    },
+    {
+      "timestamp": 1758634179.1713624,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家5",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758634180.2440975,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家6",
+      "content": "我觉得某些人的发言很可疑",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我觉得某些人的发言很可疑"
+      }
+    },
+    {
+      "timestamp": 1758634181.257939,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家7",
+      "content": "我觉得某些人的发言很可疑",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我觉得某些人的发言很可疑"
+      }
+    },
+    {
+      "timestamp": 1758634182.2846565,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家8",
+      "content": "我们要团结起来找出真正的狼人",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我们要团结起来找出真正的狼人"
+      }
+    },
+    {
+      "timestamp": 1758634183.2982593,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家9",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758634184.310817,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "voting -> voting",
+      "metadata": {}
+    }
+  ],
+  "last_updated": 1758634184.3116567
+}

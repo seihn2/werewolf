@@ -1,0 +1,26 @@
+{
+  "bot_id": 1,
+  "name": "AI玩家1",
+  "role": "seer",
+  "game_id": "09d81fbd",
+  "current_round": 0,
+  "speech_count_this_round": 0,
+  "verification_results": [
+    {
+      "target_player_id": 2,
+      "target_player_name": "AI玩家2",
+      "result": "good",
+      "round_number": 0,
+      "timestamp": 1758619809.8839638
+    }
+  ],
+  "conversation_history": [],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是AI玩家1，真实身份是seer。新游戏开始。",
+    "[第0轮] 这是一条测试笔记",
+    "[第0轮] 第0轮：我查验了AI玩家2，结果是good"
+  ],
+  "last_updated": 1758619809.8848398
+}

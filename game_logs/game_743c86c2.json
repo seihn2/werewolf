@@ -1,0 +1,410 @@
+{
+  "game_id": "743c86c2",
+  "events": [
+    {
+      "timestamp": 1758620619.7894363,
+      "round_number": 0,
+      "phase": "preparation",
+      "event_type": "game_start",
+      "player_name": null,
+      "content": "游戏开始，参与玩家：AI玩家1(werewolf), AI玩家2(witch), AI玩家3(villager), AI玩家4(villager), AI玩家5(seer), AI玩家6(werewolf)",
+      "metadata": {
+        "players": [
+          {
+            "name": "AI玩家1",
+            "role": "werewolf"
+          },
+          {
+            "name": "AI玩家2",
+            "role": "witch"
+          },
+          {
+            "name": "AI玩家3",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家4",
+            "role": "villager"
+          },
+          {
+            "name": "AI玩家5",
+            "role": "seer"
+          },
+          {
+            "name": "AI玩家6",
+            "role": "werewolf"
+          }
+        ]
+      }
+    },
+    {
+      "timestamp": 1758620619.7912033,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第1轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758620619.798097,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758620619.8016512,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家1",
+      "content": "对AI玩家3使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "AI玩家3"
+      }
+    },
+    {
+      "timestamp": 1758620619.8035998,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "AI玩家5查验AI玩家4，结果：good",
+      "metadata": {
+        "seer": "AI玩家5",
+        "target": "AI玩家4",
+        "result": "good"
+      }
+    },
+    {
+      "timestamp": 1758620619.8058257,
+      "round_number": 1,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家2",
+      "content": "对AI玩家3使用救人",
+      "metadata": {
+        "action": "救人",
+        "target": "AI玩家3"
+      }
+    },
+    {
+      "timestamp": 1758620621.8149743,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "day -> day",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758620621.8166502,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家1",
+      "content": "我们要团结起来找出真正的狼人",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我们要团结起来找出真正的狼人"
+      }
+    },
+    {
+      "timestamp": 1758620622.834496,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家2",
+      "content": "我会在关键时刻使用我的能力",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我会在关键时刻使用我的能力"
+      }
+    },
+    {
+      "timestamp": 1758620623.8686223,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家3",
+      "content": "我是村民，我们要找出狼人",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我是村民，我们要找出狼人"
+      }
+    },
+    {
+      "timestamp": 1758620624.885327,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家4",
+      "content": "我是村民，我们要找出狼人",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我是村民，我们要找出狼人"
+      }
+    },
+    {
+      "timestamp": 1758620625.9049158,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家5",
+      "content": "根据我的查验结果，我有重要信息要分享",
+      "metadata": {
+        "speech_count": 1,
+        "content": "根据我的查验结果，我有重要信息要分享"
+      }
+    },
+    {
+      "timestamp": 1758620626.918796,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家6",
+      "content": "我们要团结起来找出真正的狼人",
+      "metadata": {
+        "speech_count": 1,
+        "content": "我们要团结起来找出真正的狼人"
+      }
+    },
+    {
+      "timestamp": 1758620627.9381657,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家1",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758620628.9479938,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家2",
+      "content": "我觉得我们需要更多信息",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我觉得我们需要更多信息"
+      }
+    },
+    {
+      "timestamp": 1758620629.9556265,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家3",
+      "content": "我是村民，我们要找出狼人",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我是村民，我们要找出狼人"
+      }
+    },
+    {
+      "timestamp": 1758620630.9724057,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家4",
+      "content": "我支持预言家的判断",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我支持预言家的判断"
+      }
+    },
+    {
+      "timestamp": 1758620631.984297,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家5",
+      "content": "根据我的查验结果，我有重要信息要分享",
+      "metadata": {
+        "speech_count": 2,
+        "content": "根据我的查验结果，我有重要信息要分享"
+      }
+    },
+    {
+      "timestamp": 1758620632.999219,
+      "round_number": 1,
+      "phase": "day",
+      "event_type": "speech",
+      "player_name": "AI玩家6",
+      "content": "我怀疑预言家可能是假的",
+      "metadata": {
+        "speech_count": 2,
+        "content": "我怀疑预言家可能是假的"
+      }
+    },
+    {
+      "timestamp": 1758620634.009405,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "voting -> voting",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758620634.0129418,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "AI玩家1",
+      "content": "投票给AI玩家4",
+      "metadata": {
+        "voter": "AI玩家1",
+        "target": "AI玩家4"
+      }
+    },
+    {
+      "timestamp": 1758620634.0143032,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "AI玩家2",
+      "content": "投票给AI玩家6",
+      "metadata": {
+        "voter": "AI玩家2",
+        "target": "AI玩家6"
+      }
+    },
+    {
+      "timestamp": 1758620634.0162325,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "AI玩家3",
+      "content": "投票给AI玩家5",
+      "metadata": {
+        "voter": "AI玩家3",
+        "target": "AI玩家5"
+      }
+    },
+    {
+      "timestamp": 1758620634.017853,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "AI玩家4",
+      "content": "投票给AI玩家3",
+      "metadata": {
+        "voter": "AI玩家4",
+        "target": "AI玩家3"
+      }
+    },
+    {
+      "timestamp": 1758620634.022794,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "AI玩家5",
+      "content": "投票给AI玩家1",
+      "metadata": {
+        "voter": "AI玩家5",
+        "target": "AI玩家1"
+      }
+    },
+    {
+      "timestamp": 1758620634.0245893,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "vote",
+      "player_name": "AI玩家6",
+      "content": "投票给AI玩家2",
+      "metadata": {
+        "voter": "AI玩家6",
+        "target": "AI玩家2"
+      }
+    },
+    {
+      "timestamp": 1758620634.027397,
+      "round_number": 1,
+      "phase": "voting",
+      "event_type": "elimination",
+      "player_name": null,
+      "content": "AI玩家3被投票淘汰（得票1票）",
+      "metadata": {
+        "eliminated": "AI玩家3",
+        "votes": 1
+      }
+    },
+    {
+      "timestamp": 1758620637.0368786,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "round_start",
+      "player_name": null,
+      "content": "第2轮开始",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758620637.0474827,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "phase_change",
+      "player_name": null,
+      "content": "night -> night",
+      "metadata": {}
+    },
+    {
+      "timestamp": 1758620637.0509267,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "special_action",
+      "player_name": "AI玩家1",
+      "content": "对AI玩家4使用杀人",
+      "metadata": {
+        "action": "杀人",
+        "target": "AI玩家4"
+      }
+    },
+    {
+      "timestamp": 1758620637.0539696,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "verification",
+      "player_name": null,
+      "content": "AI玩家5查验AI玩家4，结果：good",
+      "metadata": {
+        "seer": "AI玩家5",
+        "target": "AI玩家4",
+        "result": "good"
+      }
+    },
+    {
+      "timestamp": 1758620637.0561001,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "death",
+      "player_name": null,
+      "content": "AI玩家4被狼人杀害",
+      "metadata": {
+        "victim": "AI玩家4",
+        "cause": "狼人杀害"
+      }
+    },
+    {
+      "timestamp": 1758620639.0594482,
+      "round_number": 2,
+      "phase": "night",
+      "event_type": "game_end",
+      "player_name": null,
+      "content": "游戏结束，狼人获胜。原因：狼人数量占优",
+      "metadata": {
+        "winner": "狼人",
+        "reason": "狼人数量占优"
+      }
+    }
+  ],
+  "last_updated": 1758620639.0610466
+}

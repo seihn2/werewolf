@@ -1,0 +1,36 @@
+{
+  "bot_id": 9,
+  "name": "AI玩家9",
+  "role": "villager",
+  "game_id": "b00912c3",
+  "current_round": 1,
+  "speech_count_this_round": 0,
+  "verification_results": [],
+  "conversation_history": [
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家1",
+      "speaker_role": "villager",
+      "content": "作为村民，我没有特殊能力，只能通过观察和分析来判断。目前我觉得某些玩家的发言很值得怀疑。",
+      "timestamp": 1758634785.3968747,
+      "is_private": false
+    },
+    {
+      "round_number": 1,
+      "phase": "day",
+      "speaker_name": "AI玩家2",
+      "speaker_role": "villager",
+      "content": "我仔细分析了大家的发言和行为模式，发现了一些可疑的地方。我们村民必须团结起来找出狼人。",
+      "timestamp": 1758634796.4135332,
+      "is_private": false
+    }
+  ],
+  "round_summaries": [],
+  "suspicions": {},
+  "private_notes": [
+    "[第0轮] 我是AI玩家9，真实身份是villager。新游戏开始。",
+    "[第1轮] 第1轮开始"
+  ],
+  "last_updated": 1758634796.4135447
+}

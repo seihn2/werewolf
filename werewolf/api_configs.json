@@ -1,0 +1,101 @@
+{
+  "openai_gpt4": {
+    "name": "openai_gpt4",
+    "provider": "openai",
+    "api_key": "your-openai-api-key",
+    "base_url": "https://api.openai.com/v1",
+    "model": "gpt-4o-mini",
+    "description": "OpenAI GPT-4 模型",
+    "is_default": false
+  },
+  "siliconflow_qwen": {
+    "name": "siliconflow_qwen",
+    "provider": "siliconflow",
+    "api_key": "your-siliconflow-api-key",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "description": "SiliconFlow Qwen模型",
+    "is_default": false
+  },
+  "siliconflow_deepseek": {
+    "name": "siliconflow_deepseek",
+    "provider": "siliconflow",
+    "api_key": "sk-efxseintoljejcwtlncfdmiloviyhpurdmjslovdplurhptp",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-V3.1",
+    "description": "SiliconFlow DeepSeek模型",
+    "is_default": false
+  },
+  "genshin1": {
+    "name": "genshin1",
+    "provider": "siliconflow",
+    "api_key": "sk-fekibaipaqnxcmhlefolvbwyzgqdweipfxpdmkxkifdcfham",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-V3.1",
+    "description": "",
+    "is_default": true
+  },
+  "genshin2": {
+    "name": "genshin2",
+    "provider": "siliconflow",
+    "api_key": "sk-lnewgfhobydqadatnvysuzdfmmwlhjbwxzaahfgthmedxxwt",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-V3.1",
+    "description": "",
+    "is_default": false
+  },
+  "genshin3": {
+    "name": "genshin3",
+    "provider": "siliconflow",
+    "api_key": "sk-jmzhcbpdzrmbfqdbnvbrlhxcrdkyfoolrbakmjtuvnybnkya",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-V3.1",
+    "description": "",
+    "is_default": false
+  },
+  "genshin4": {
+    "name": "genshin4",
+    "provider": "siliconflow",
+    "api_key": "sk-frvqtkjpmneoardsplydxcennhesvejsogzcwrdeaecxdzls",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-V3.1",
+    "description": "",
+    "is_default": false
+  },
+  "genshin5": {
+    "name": "genshin5",
+    "provider": "siliconflow",
+    "api_key": "sk-mwnirpxvlrqceeacsdvxwwdkyagylbaqupovyszrqsforpqr",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-V3.1",
+    "description": "",
+    "is_default": false
+  },
+  "bot7": {
+    "name": "bot7",
+    "provider": "siliconflow",
+    "api_key": "sk-jsebzenaqkziqwlkdplqoogrjqbmqsmnsuwyxwqgsrjnzdbz",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-R1",
+    "description": "",
+    "is_default": false
+  },
+  "bot8": {
+    "name": "bot8",
+    "provider": "siliconflow",
+    "api_key": "sk-abrisvrohnnqulwcbpcumhpiysprkibuqovogtpzokrloxvd",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-R1",
+    "description": "",
+    "is_default": false
+  },
+  "bot9": {
+    "name": "bot9",
+    "provider": "siliconflow",
+    "api_key": "sk-hatmtxkpgcipkmkokrhrkeyaknkrwsllqhlqfcqiprsksxjt",
+    "base_url": "https://api.siliconflow.cn/v1",
+    "model": "deepseek-ai/DeepSeek-R1",
+    "description": "",
+    "is_default": false
+  }
+}

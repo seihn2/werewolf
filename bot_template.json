@@ -1,0 +1,85 @@
+{
+  "usage": "Edit api_key values below, then run: python simple_bot_gen.py import bot_template.json",
+  "bot_configs": [
+    {
+      "name": "AI玩家1",
+      "provider": "openai",
+      "api_key": "sk-your-openai-key-here",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4o-mini",
+      "description": "OpenAI AI玩家"
+    },
+    {
+      "name": "AI玩家2",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "description": "SiliconFlow AI玩家"
+    },
+    {
+      "name": "AI玩家3",
+      "provider": "openai",
+      "api_key": "sk-your-openai-key-here",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4o-mini",
+      "description": "OpenAI AI玩家"
+    },
+    {
+      "name": "AI玩家4",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "deepseek-ai/DeepSeek-V2.5",
+      "description": "SiliconFlow DeepSeek模型"
+    },
+    {
+      "name": "AI玩家5",
+      "provider": "openai",
+      "api_key": "sk-your-openai-key-here",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4o-mini",
+      "description": "OpenAI AI玩家"
+    },
+    {
+      "name": "AI玩家6",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "description": "SiliconFlow AI玩家"
+    },
+    {
+      "name": "AI玩家7",
+      "provider": "openai",
+      "api_key": "sk-your-openai-key-here",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4o-mini",
+      "description": "OpenAI AI玩家"
+    },
+    {
+      "name": "AI玩家8",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "deepseek-ai/DeepSeek-V2.5",
+      "description": "SiliconFlow DeepSeek模型"
+    },
+    {
+      "name": "AI玩家9",
+      "provider": "openai",
+      "api_key": "sk-your-openai-key-here",
+      "base_url": "https://api.openai.com/v1",
+      "model": "gpt-4o-mini",
+      "description": "OpenAI AI玩家"
+    },
+    {
+      "name": "AI玩家10",
+      "provider": "siliconflow",
+      "api_key": "sk-your-siliconflow-key-here",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "description": "SiliconFlow AI玩家"
+    }
+  ]
+}
