@@ -45,6 +45,7 @@ class WerewolfGameLauncher:
         print("4.  系统状态")
         print("5.  帮助说明")
         print("6.  测试API配置")
+        print("7.  批量切换模型")
         print("0.  退出程序")
         print("-"*50)
 
@@ -404,13 +405,111 @@ class WerewolfGameLauncher:
 
         input("\n按回车键返回主菜单...")
 
+    def batch_switch_models(self):
+        """批量切换模型"""
+        print("\n 批量模型切换")
+        print("-" * 30)
+
+        # 获取所有配置
+        configs = self.config_manager.list_configs()
+        if not configs:
+            print(" 没有找到任何API配置")
+            return
+
+        print(f" 当前共有 {len(configs)} 个配置")
+
+        # 显示常用模型列表
+        popular_models = {
+            "1": {
+                "name": "inclusionAI/Ling-mini-2.0",
+                "description": "Ling-mini-2.0 (推荐新模型)"
+            },
+            "2": {
+                "name": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+                "description": "Qwen3-Next-80B (当前主力模型)"
+            },
+            "3": {
+                "name": "inclusionAI/Ring-flash-2.0",
+                "description": "Ring-flash-2.0 (备用模型)"
+            },
+            "4": {
+                "name": "deepseek-ai/DeepSeek-V3.1",
+                "description": "DeepSeek-V3.1 (推理模型)"
+            },
+            "5": {
+                "name": "deepseek-ai/DeepSeek-R1",
+                "description": "DeepSeek-R1 (最新模型)"
+            }
+        }
+
+        print("\n 可选模型:")
+        for key, model in popular_models.items():
+            print(f"  {key}. {model['name']}")
+            print(f"     {model['description']}")
+        print("  6. 自定义模型名称")
+        print("  0. 返回主菜单")
+
+        choice = input("\n请选择要切换的模型 (0-6): ").strip()
+
+        if choice == "0":
+            return
+        elif choice in popular_models:
+            target_model = popular_models[choice]["name"]
+        elif choice == "6":
+            target_model = input("\n请输入自定义模型名称: ").strip()
+            if not target_model:
+                print(" 模型名称不能为空")
+                return
+        else:
+            print(" 无效选择")
+            return
+
+        # 确认操作
+        print(f"\n 将把所有配置的模型切换为: {target_model}")
+        confirm = input(" 确认执行? (y/N): ").strip().lower()
+
+        if confirm not in ['y', 'yes']:
+            print(" 操作已取消")
+            return
+
+        # 执行批量更新
+        try:
+            updated_count = 0
+            print(f"\n 开始批量更新...")
+
+            for config in configs:
+                old_model = config.model
+                config.model = target_model
+                print(f"  {config.name}: {old_model} -> {target_model}")
+                updated_count += 1
+
+            # 保存配置
+            self.config_manager.save_configs()
+
+            print(f"\n 成功更新 {updated_count} 个配置!")
+            print(f" 所有Bot现在使用: {target_model}")
+
+            # 显示更新后的统计
+            print(f"\n 更新统计:")
+            model_count = {}
+            for config in configs:
+                model_count[config.model] = model_count.get(config.model, 0) + 1
+
+            for model, count in model_count.items():
+                print(f"  {model}: {count} 个配置")
+
+        except Exception as e:
+            print(f" 更新失败: {e}")
+
+        input("\n按回车键返回主菜单...")
+
     async def run(self):
         """运行主程序"""
         self.show_welcome()
 
         while True:
             self.show_main_menu()
-            choice = input("\n请选择操作 (0-6): ").strip()
+            choice = input("\n请选择操作 (0-7): ").strip()
 
             try:
                 if choice == "0":
@@ -428,6 +527,8 @@ class WerewolfGameLauncher:
                     self.show_help()
                 elif choice == "6":
                     await self.test_configs()
+                elif choice == "7":
+                    self.batch_switch_models()
                 else:
                     print(" 无效选择请重试")
             except KeyboardInterrupt:
