@@ -1,286 +1,198 @@
-# AI狼人杀 - 多AI Agent对战平台
+# WolfPlay
 
-基于斗地主项目的LLM逻辑重构，实现多个不同AI模型相互进行狼人杀游戏的智能对战平台。
+基于 LangGraph 的多智能体狼人杀对战框架，包含完整的七人局游戏循环、角色视图隔离、Planner-Evaluator-Executor 认知闭环、Reflexion、分级记忆、自博弈轨迹生成和 TRL DPO 后训练入口。
 
-## 🎯 项目特点
+代码参考 ICML 2025 论文 [Learning Strategic Language Agents in the Werewolf Game with Iterative Latent Space Policy Optimization](https://arxiv.org/abs/2502.04686)。本仓库实现的是可运行工程版，不宣称复现论文的大规模 Deep CFR、千局采样或任何胜率提升结果。
 
-- **多AI模型支持**: 支持GPT、Claude、DeepSeek、通义千问等多种AI模型
-- **智能角色扮演**: AI会根据狼人杀角色特点进行策略思考和决策
-- **完整游戏规则**: 实现标准狼人杀规则，支持6-12人局
-- **灵活配置管理**: 用户可设置n个API，程序提供n个API调用接口
-- **实时游戏日志**: 详细记录游戏过程和AI决策思路
-- **隐私保护**: 严格遵循身份隐藏规则，防止信息泄露
+完整的架构说明、论文差距、验收标准、真实简历表述和面试问答见 [`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md)。
 
-## 📦 项目结构
+## 已实现
 
+- **LangGraph 状态机**：夜间狼人、预言家、医生、结算、白天发言、同步投票、胜负判断和条件边循环。
+- **七人论文规则**：2 狼人、1 预言家、1 医生、3 村民；狼人达到人数平衡即获胜。
+- **认知闭环**：Planner 生成多个候选，Evaluator 评分，Executor 执行，低分或非法动作进入 Reflexion。
+- **高级策略候选**：狼人候选策略包含隐藏身份、带票、悍跳预言家和伪造验人信息。
+- **分级记忆**：工作记忆、情景记忆、语义角色信念和反思记忆。
+- **异步消息总线**：`asyncio.Queue`、Lamport 逻辑时钟、公开/私有/阵营 audience 隔离。
+- **离线与模型双后端**：默认启发式 Agent 无需 API；也可连接任意 OpenAI-compatible 聊天接口。
+- **训练数据链路**：游戏轨迹 JSONL → outcome-aware 偏好对 → `prompt/chosen/rejected` DPO JSONL。
+- **DPO/LoRA**：Hugging Face TRL `DPOTrainer` 训练入口，不需要修改对战代码。
+- **双阵营对照评测**：challenger 与 baseline 分别控制狼人/村民阵营并交换阵营评测。
+
+## 架构
+
+```mermaid
+flowchart LR
+    S([START]) --> Setup
+    Setup --> Wolf[狼人行动]
+    Wolf --> Seer[预言家查验]
+    Seer --> Doctor[医生守护]
+    Doctor --> Night[夜晚结算]
+    Night --> Check{胜负判断}
+    Check -->|继续| Announce[白天公告]
+    Announce --> Discuss[顺序发言]
+    Discuss --> Vote[异步投票]
+    Vote --> Resolve[投票结算]
+    Resolve --> Check
+    Check -->|下一轮| Advance[轮次推进]
+    Advance --> Wolf
+    Check -->|结束| E([END])
 ```
-werewolf/
-├── __init__.py                    # 模块初始化
-├── main.py                       # 主启动脚本
-├── enhanced_game_controller.py   # 增强版游戏控制器
-├── game_controller.py            # 基础游戏控制器
-├── round_manager.py              # 游戏轮次管理器
-├── game_logic.py                 # 狼人杀游戏逻辑
-├── ai_player.py                  # AI玩家实现
-├── bot_memory.py                 # AI记忆系统
-├── conversation_manager.py       # 对话管理系统
-├── night_actions.py              # 夜间行动管理
-├── llm_manager.py                # 多LLM API管理器
-├── api_config.py                 # API配置管理
-├── config_manager.py             # 配置管理工具
-├── game_logger.py                # 游戏日志记录
-├── name_generator.py             # 随机名字生成器
-├── change_model.py               # 批量模型更换工具
-├── simple_update.py              # 简单模型更新工具
-├── bot_generator.py              # Bot批量生成工具
-├── simple_bot_gen.py             # 简单Bot生成工具
-├── update_models.py              # 模型更新工具
-├── fix_encoding.py               # 编码问题修复工具
-├── api_configs.json              # API配置文件
-└── README.md                     # 使用说明
-```
 
-## 🚀 快速开始
+每个 Agent 只从 `AsyncMessageBus.events_for(player_id)` 获得可见事件。预言家查验、角色分配和狼人队友信息使用私有 audience，不会出现在其他玩家的观察或记忆中。
 
-### 1. 安装依赖
+## 安装
+
+推荐 Python 3.11：
 
 ```bash
-pip install aiohttp asyncio
+uv sync --extra dev
 ```
 
-### 2. 配置API密钥
+训练时再安装 PyTorch/TRL：
 
-编辑 `api_configs.json` 文件，添加至少6个不同的LLM API配置：
+```bash
+uv sync --extra train
+```
+
+## 运行完整对局
+
+默认启发式 Agent，不需要外部模型：
+
+```bash
+uv run wolfplay play --seed 42 --max-rounds 8 \
+  --output artifacts/demo_game.json
+```
+
+也可以使用根目录入口：
+
+```bash
+uv run python main.py play --seed 42
+```
+
+### 接入聊天模型
+
+```bash
+cp .env.example .env
+export WOLFPLAY_BASE_URL="https://your-endpoint.example/v1"
+export WOLFPLAY_API_KEY="..."
+export WOLFPLAY_MODEL="your-model"
+
+uv run wolfplay play --backend openai-compatible
+```
+
+模型只负责 Planner 生成候选；Evaluator、规则校验和 Reflexion 仍在本地执行，因此模型输出非法 JSON 或非法动作时会自动回退。
+
+## 自博弈与 DPO
+
+### 1. 生成轨迹
+
+```bash
+uv run wolfplay self-play \
+  --games 100 \
+  --concurrency 4 \
+  --seed 2025 \
+  --max-rounds 8 \
+  --output data/generated/self_play.jsonl
+```
+
+每条游戏记录包含：
+
+- 完整事件流和逻辑时间；
+- 每名玩家的真实角色和最终胜负；
+- 每次决策的 observation prompt；
+- Planner 候选动作；
+- Evaluator 分数与合法性；
+- 最终选择和 Reflexion 内容。
+
+### 2. 构造 DPO 偏好数据
+
+```bash
+uv run wolfplay build-dpo \
+  --input data/generated/self_play.jsonl \
+  --output data/generated/dpo_pairs.jsonl \
+  --outcome-bonus 0.25
+```
+
+如只保留胜方轨迹：
+
+```bash
+uv run wolfplay build-dpo \
+  --input data/generated/self_play.jsonl \
+  --output data/generated/dpo_winners.jsonl \
+  --winning-only
+```
+
+输出格式可直接交给 TRL：
 
 ```json
-{
-  "genshin1": {
-    "name": "genshin1",
-    "provider": "siliconflow",
-    "api_key": "your-api-key",
-    "base_url": "https://api.siliconflow.cn/v1",
-    "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
-    "description": "",
-    "is_default": true
-  }
-}
+{"prompt":"...","chosen":"...","rejected":"..."}
 ```
 
-### 3. 启动游戏
+### 3. DPO + LoRA 训练
 
 ```bash
-python main.py
+uv run wolfplay train-dpo \
+  --dataset data/generated/dpo_pairs.jsonl \
+  --model Qwen/Qwen3-0.6B \
+  --output-dir checkpoints/wolfplay-dpo \
+  --epochs 2 \
+  --learning-rate 1e-6 \
+  --beta 0.1 \
+  --batch-size 1 \
+  --gradient-accumulation-steps 16
 ```
 
-选择对应的游戏模式开始AI狼人杀游戏。
+默认启用 LoRA。全参数训练增加 `--no-lora`。
 
-## 🛠️ 工具说明
-
-### 核心游戏文件
-
-| 文件 | 作用 | 说明 |
-|------|------|------|
-| `main.py` | 主启动脚本 | 游戏入口，提供菜单选择和游戏启动 |
-| `enhanced_game_controller.py` | 增强版游戏控制器 | 支持N人局，完整投票系统，增强AI发言 |
-| `game_controller.py` | 基础游戏控制器 | 基础版游戏流程控制 |
-| `round_manager.py` | 轮次管理器 | 管理游戏的夜晚和白天阶段 |
-| `game_logic.py` | 游戏逻辑 | 核心狼人杀规则和状态管理 |
-| `ai_player.py` | AI玩家 | AI角色扮演和决策系统 |
-| `night_actions.py` | 夜间行动 | AI控制的预言家查验、女巫行动 |
-
-### 配置和管理工具
-
-| 文件 | 作用 | 使用方法 |
-|------|------|----------|
-| `config_manager.py` | 配置管理界面 | `python config_manager.py` - 图形化配置管理 |
-| `api_config.py` | API配置核心 | 提供配置读写和管理功能 |
-| `change_model.py` | 批量模型更换 | `python change_model.py <模型名> [提供商]` |
-| `simple_update.py` | 简单模型更新 | 快速更新所有Bot到指定模型 |
-| `bot_generator.py` | Bot批量生成 | 生成多个Bot配置 |
-| `simple_bot_gen.py` | 简单Bot生成 | 快速生成Bot配置 |
-| `update_models.py` | 模型更新工具 | 各种模型更新操作 |
-
-### 辅助系统
-
-| 文件 | 作用 | 说明 |
-|------|------|------|
-| `bot_memory.py` | AI记忆系统 | 管理AI的游戏记忆和历史信息 |
-| `conversation_manager.py` | 对话管理 | 处理AI之间的对话和发言 |
-| `game_logger.py` | 游戏日志 | 记录游戏过程和事件 |
-| `name_generator.py` | 名字生成器 | 提供100个随机AI玩家名字 |
-| `llm_manager.py` | LLM管理器 | 多LLM API调用和管理 |
-| `fix_encoding.py` | 编码修复 | 修复中文编码问题 |
-
-## 🔧 工具使用示例
-
-### 1. 批量更换AI模型
+### 4. 汇总胜率
 
 ```bash
-# 更换所有Bot到Qwen模型
-python change_model.py Qwen/Qwen3-Next-80B-A3B-Instruct
-
-# 更换到OpenAI模型
-python change_model.py gpt-4o-mini openai
-
-# 查看当前配置状态
-python change_model.py --status
-
-# 查看可用模型列表
-python change_model.py --list
+uv run wolfplay evaluate --input data/generated/self_play.jsonl
 ```
 
-### 2. 配置管理
+该命令只统计真实运行产生的数据。简历中的“胜率提升 23%”必须在固定基线、随机种子、模型版本和足够局数下实际测量后才能保留。
+
+### 5. 训练后模型对基线评测
+
+分别配置 `WOLFPLAY_CHALLENGER_*` 与 `WOLFPLAY_BASELINE_*` 后运行：
 
 ```bash
-# 启动配置管理界面
-python config_manager.py
+uv run wolfplay head-to-head \
+  --games-per-side 100 \
+  --challenger-backend openai-compatible \
+  --baseline-backend openai-compatible \
+  --output artifacts/head_to_head.json
 ```
 
-### 3. 快速更新模型
+该命令会让双方交换阵营，并分别输出 challenger 的狼人侧、村民侧和总体胜率。
+
+## 目录
+
+```text
+src/wolfplay/
+├── bus.py             # 异步消息总线和 Lamport 时钟
+├── cognition.py       # Planner-Evaluator-Executor + Reflexion
+├── engine.py          # LangGraph 游戏状态机
+├── evaluation.py      # challenger/baseline 双阵营评测
+├── llm.py             # OpenAI-compatible 异步模型后端
+├── memory.py          # 分级记忆与角色信念
+├── models.py          # 状态、事件、动作和轨迹模型
+├── preference.py      # 自博弈轨迹转 DPO 偏好对
+├── self_play.py       # 并发自博弈、原子输出与统计
+├── cli.py             # 对战、数据、评估和训练命令
+└── training/dpo.py    # TRL DPO/LoRA 训练入口
+```
+
+原仓库的旧版脚本仍保留在根目录作为参考，新实现统一从 `src/wolfplay/` 启动。
+
+## 测试
 
 ```bash
-# 运行简单更新脚本
-python simple_update.py
+uv run pytest
+uv run ruff check src tests main.py
 ```
 
-### 4. 生成Bot配置
+## 安全说明
 
-```bash
-# 生成多个Bot配置
-python bot_generator.py
-
-# 简单Bot生成
-python simple_bot_gen.py
-```
-
-## 🎮 游戏规则
-
-### 支持角色
-
-- **村民**: 通过投票找出狼人
-- **狼人**: 夜晚击杀好人，白天伪装
-- **预言家**: 夜晚查验玩家身份（AI自动决策）
-- **女巫**: 拥有解药和毒药（AI自动决策）
-
-### 支持人数
-
-- **6人局**: 2狼人 + 4好人（1预言家 + 1女巫 + 2村民）
-- **7人局**: 2狼人 + 5好人（1预言家 + 1女巫 + 3村民）
-- **8人局**: 3狼人 + 5好人（1预言家 + 1女巫 + 3村民）
-- **9人局**: 3狼人 + 6好人（1预言家 + 1女巫 + 4村民）
-- **10人局**: 4狼人 + 6好人（1预言家 + 1女巫 + 4村民）
-- **11人局**: 4狼人 + 7好人（1预言家 + 1女巫 + 5村民）
-- **12人局**: 4狼人 + 8好人（1预言家 + 1女巫 + 6村民）
-
-### 游戏流程
-
-1. **夜晚阶段**: 各角色秘密行动
-   - 狼人讨论并击杀目标（AI自动决策）
-   - 预言家查验玩家身份（AI自动选择目标）
-   - 女巫选择救人或下毒（AI自动决策）
-
-2. **白天阶段**: 公开讨论
-   - 宣布夜晚结果（不泄露角色身份）
-   - AI玩家发言讨论（强制长篇发言）
-   - 每个AI都会基于角色身份发言
-
-3. **投票阶段**: 投票出局
-   - 每个AI玩家投票（AI自动决策）
-   - 得票最多者出局
-   - 出局时不公开身份
-
-### 胜利条件
-
-- **好人获胜**: 所有狼人被投票出局
-- **狼人获胜**: 狼人数量≥好人数量
-
-### 隐私保护
-
-- 游戏开始时不显示角色分配
-- 夜间行动不泄露角色身份
-- 预言家查验结果只对预言家可见
-- 投票出局时不立即公开身份
-- 只在游戏结束时公开所有角色
-
-## 🤖 AI特点
-
-### 智能决策
-
-AI玩家具备以下能力：
-
-1. **角色认知**: 明确自己的角色和目标
-2. **策略思考**: 根据游戏状态制定策略
-3. **记忆系统**: 记住游戏过程中的重要信息
-4. **伪装能力**: 狼人会伪装成好人
-5. **推理分析**: 根据发言和投票分析其他玩家
-6. **长篇发言**: 每次发言都包含丰富的分析内容
-
-### 夜间自动行动
-
-- **预言家**: AI自动选择查验目标，优先可疑玩家
-- **女巫**: AI自动决定是否使用解药和毒药
-- **狼人**: AI协商选择击杀目标
-
-## 📊 API配置
-
-### 配置文件格式 (`api_configs.json`)
-
-```json
-{
-  "配置名": {
-    "name": "配置名",
-    "provider": "siliconflow|openai|anthropic",
-    "api_key": "你的API密钥",
-    "base_url": "API基础URL",
-    "model": "模型名称",
-    "description": "配置描述",
-    "is_default": true/false
-  }
-}
-```
-
-### 支持的提供商
-
-| 提供商 | Provider值 | 常用模型 |
-|--------|------------|----------|
-| SiliconFlow | `siliconflow` | `Qwen/Qwen3-Next-80B-A3B-Instruct` |
-| OpenAI | `openai` | `gpt-4o`, `gpt-4o-mini` |
-| Anthropic | `anthropic` | `claude-3-5-sonnet-20241022` |
-
-## 🔍 故障排查
-
-### 常见问题
-
-1. **编码错误**: 运行 `python fix_encoding.py` 修复
-2. **API调用失败**: 检查API密钥和网络连接
-3. **模型不支持**: 使用 `change_model.py --list` 查看支持的模型
-4. **游戏卡住**: 检查AI响应超时设置
-
-### 调试技巧
-
-- 查看控制台输出的详细错误信息
-- 使用 `--status` 参数检查配置状态
-- 确保至少有6个有效的API配置
-
-## 🤝 贡献指南
-
-欢迎提交Issue和Pull Request：
-
-1. **报告Bug**: 详细描述问题和复现步骤
-2. **功能建议**: 提出新功能需求
-3. **代码贡献**: 遵循现有代码风格
-4. **文档完善**: 改进使用说明
-
-## 📄 许可证
-
-本项目基于原斗地主项目的许可证，仅供学习和研究使用。
-
-## 🙏 致谢
-
-- 基于原AI斗地主项目的LLM逻辑框架
-- 感谢各大AI模型提供商的API支持
-- 参考了经典狼人杀游戏规则
-
----
-
-**开始你的AI狼人杀之旅吧！🐺**
+上游仓库历史中曾提交多个疑似真实 API Key。当前工作树已移除这些值，但 Git 历史中的凭据必须由持有者在服务商后台立即吊销；仅删除当前文件不能使旧 Key 失效。

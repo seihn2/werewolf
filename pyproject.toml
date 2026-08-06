@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wolfplay"
+version = "0.1.0"
+description = "LangGraph multi-agent Werewolf environment with self-play and DPO data generation"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "httpx>=0.28,<1",
+  "langgraph>=1.0.8,<2",
+  "typing-extensions>=4.12",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.25",
+  "ruff>=0.12",
+]
+train = [
+  "accelerate>=1.10",
+  "datasets>=4.0",
+  "peft>=0.17",
+  "torch>=2.6",
+  "transformers>=5.0",
+  "trl>=1.0,<2",
+]
+
+[project.scripts]
+wolfplay = "wolfplay.cli:main"
+wolfplay-train-dpo = "wolfplay.training.dpo:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wolfplay"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
