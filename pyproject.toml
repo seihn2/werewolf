@@ -32,6 +32,7 @@ train = [
 [project.scripts]
 wolfplay = "wolfplay.cli:main"
 wolfplay-train-dpo = "wolfplay.training.dpo:main"
+wolfplay-train-deep-cfr = "wolfplay.training.deep_cfr:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/wolfplay"]

@@ -1,21 +1,25 @@
 # WolfPlay
 
-基于 LangGraph 的多智能体狼人杀对战框架，包含完整的七人局游戏循环、角色视图隔离、Planner-Evaluator-Executor 认知闭环、Reflexion、分级记忆、自博弈轨迹生成和 TRL DPO 后训练入口。
+WolfPlay 是由 seihn2 独立设计开发的多智能体战略语言博弈项目，包含完整七人局、LangGraph 非线性状态机、角色视图隔离、Planner-Evaluator-Executor 认知闭环、Reflexion、分级记忆、自博弈、潜在策略聚类、Deep CFR 和 DPO 后训练链路。
 
-代码参考 ICML 2025 论文 [Learning Strategic Language Agents in the Werewolf Game with Iterative Latent Space Policy Optimization](https://arxiv.org/abs/2502.04686)。本仓库实现的是可运行工程版，不宣称复现论文的大规模 Deep CFR、千局采样或任何胜率提升结果。
+仓库提供可运行代码和小规模冒烟配置，但当前未执行正式模型训练、千局采样或统计评测，因此不声明任何胜率提升、策略涌现或“通过训练学会悍跳”的结果。
 
-完整的架构说明、论文差距、验收标准、真实简历表述和面试问答见 [`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md)。
+完整的架构说明、能力边界、验收标准、真实简历表述和面试问答见 [`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md)。
 
 ## 已实现
 
 - **LangGraph 状态机**：夜间狼人、预言家、医生、结算、白天发言、同步投票、胜负判断和条件边循环。
-- **七人论文规则**：2 狼人、1 预言家、1 医生、3 村民；狼人达到人数平衡即获胜。
+- **标准七人规则**：2 狼人、1 预言家、1 医生、3 村民；狼人达到人数平衡即获胜。
 - **认知闭环**：Planner 生成多个候选，Evaluator 评分，Executor 执行，低分或非法动作进入 Reflexion。
 - **高级策略候选**：狼人候选策略包含隐藏身份、带票、悍跳预言家和伪造验人信息。
 - **分级记忆**：工作记忆、情景记忆、语义角色信念和反思记忆。
 - **异步消息总线**：`asyncio.Queue`、Lamport 逻辑时钟、公开/私有/阵营 audience 隔离。
 - **离线与模型双后端**：默认启发式 Agent 无需 API；也可连接任意 OpenAI-compatible 聊天接口。
-- **训练数据链路**：游戏轨迹 JSONL → outcome-aware 偏好对 → `prompt/chosen/rejected` DPO JSONL。
+- **潜在策略空间**：支持离线 Hashing Embedding 或 OpenAI-compatible Embedding，并按角色执行确定性 K-Means 聚类。
+- **抽象扩展式博弈**：发言使用离散策略簇，夜间和投票保留目标动作，包含角色私有信息、信息集、机会节点和可配置奖励。
+- **Deep CFR**：Advantage/Regret Network、Strategy Network、Reservoir Buffer、External-Sampling 遍历、深度限制 rollout、checkpoint 与策略采样。
+- **CFR 偏好数据**：将语言候选映射到潜在动作，使用网络预测 advantage 构造 `prompt/chosen/rejected` DPO JSONL。
+- **多轮迭代器**：串联“自博弈 → 聚类 → Deep CFR → DPO → 重新采样”，支持断点续跑和逐轮 artifact manifest。
 - **DPO/LoRA**：Hugging Face TRL `DPOTrainer` 训练入口，不需要修改对战代码。
 - **双阵营对照评测**：challenger 与 baseline 分别控制狼人/村民阵营并交换阵营评测。
 
@@ -83,7 +87,7 @@ uv run wolfplay play --backend openai-compatible
 
 模型只负责 Planner 生成候选；Evaluator、规则校验和 Reflexion 仍在本地执行，因此模型输出非法 JSON 或非法动作时会自动回退。
 
-## 自博弈与 DPO
+## 潜在策略、Deep CFR 与 DPO
 
 ### 1. 生成轨迹
 
@@ -105,7 +109,49 @@ uv run wolfplay self-play \
 - Evaluator 分数与合法性；
 - 最终选择和 Reflexion 内容。
 
-### 2. 构造 DPO 偏好数据
+### 2. 构建角色潜在策略空间
+
+默认使用无外部依赖的确定性 Hashing Embedding：
+
+```bash
+uv run wolfplay build-latent \
+  --input data/generated/self_play.jsonl \
+  --output data/generated/latent_space.json \
+  --werewolf-clusters 3 \
+  --seer-clusters 2 \
+  --doctor-clusters 2 \
+  --villager-clusters 2
+```
+
+也可以设置 `WOLFPLAY_EMBEDDING_BASE_URL`、`WOLFPLAY_EMBEDDING_API_KEY`、`WOLFPLAY_EMBEDDING_MODEL`，再增加 `--embedding-backend openai-compatible` 使用真实 Embedding 服务。
+
+### 3. 训练 Deep CFR
+
+```bash
+uv run wolfplay train-deep-cfr \
+  --latent-space data/generated/latent_space.json \
+  --output-dir checkpoints/wolfplay-cfr \
+  --iterations 100 \
+  --traversals-per-player 16 \
+  --advantage-train-steps 200 \
+  --strategy-train-steps 400 \
+  --batch-size 256
+```
+
+训练会保存角色共享的 Advantage/Regret Network、Strategy Network、Reservoir Buffer 状态、动作目录、潜在策略空间、随机状态和迭代指标。`--max-traversal-depth` 控制 External-Sampling 遍历深度，超过深度后按当前 regret-matching 策略 rollout 到终局。
+
+### 4. 使用 CFR Advantage 构造 DPO 偏好
+
+```bash
+uv run wolfplay build-cfr-dpo \
+  --input data/generated/self_play.jsonl \
+  --checkpoint checkpoints/wolfplay-cfr \
+  --output data/generated/dpo_cfr.jsonl
+```
+
+该命令按真实对局顺序回放抽象状态，将每个语言候选映射到角色策略簇或离散目标动作，并使用对应信息集上的网络 advantage 排序候选。
+
+仍可使用不依赖 CFR 的启发式偏好构造器：
 
 ```bash
 uv run wolfplay build-dpo \
@@ -129,11 +175,11 @@ uv run wolfplay build-dpo \
 {"prompt":"...","chosen":"...","rejected":"..."}
 ```
 
-### 3. DPO + LoRA 训练
+### 5. DPO + LoRA 训练
 
 ```bash
 uv run wolfplay train-dpo \
-  --dataset data/generated/dpo_pairs.jsonl \
+  --dataset data/generated/dpo_cfr.jsonl \
   --model Qwen/Qwen3-0.6B \
   --output-dir checkpoints/wolfplay-dpo \
   --epochs 2 \
@@ -145,7 +191,20 @@ uv run wolfplay train-dpo \
 
 默认启用 LoRA。全参数训练增加 `--no-lora`。
 
-### 4. 汇总胜率
+### 6. 一键多轮迭代
+
+```bash
+uv run wolfplay iterate-policy \
+  --output-dir artifacts/iterations \
+  --iterations 3 \
+  --games-per-iteration 100 \
+  --cfr-iterations 100 \
+  --dpo-model Qwen/Qwen3-0.6B
+```
+
+每轮目录独立保存自博弈 JSONL、潜在策略空间、Deep CFR checkpoint、CFR-DPO 数据、可选 DPO checkpoint 和 manifest。使用外部模型时，第一轮读取 `WOLFPLAY_*`，后续轮次读取 `WOLFPLAY_ITERATION_2_*`、`WOLFPLAY_ITERATION_3_*` 等配置，便于将上一轮训练模型部署后重新采样。
+
+### 7. 汇总胜率
 
 ```bash
 uv run wolfplay evaluate --input data/generated/self_play.jsonl
@@ -153,7 +212,7 @@ uv run wolfplay evaluate --input data/generated/self_play.jsonl
 
 该命令只统计真实运行产生的数据。简历中的“胜率提升 23%”必须在固定基线、随机种子、模型版本和足够局数下实际测量后才能保留。
 
-### 5. 训练后模型对基线评测
+### 8. 训练后模型对基线评测
 
 分别配置 `WOLFPLAY_CHALLENGER_*` 与 `WOLFPLAY_BASELINE_*` 后运行：
 
@@ -171,20 +230,27 @@ uv run wolfplay head-to-head \
 
 ```text
 src/wolfplay/
-├── bus.py             # 异步消息总线和 Lamport 时钟
-├── cognition.py       # Planner-Evaluator-Executor + Reflexion
-├── engine.py          # LangGraph 游戏状态机
-├── evaluation.py      # challenger/baseline 双阵营评测
-├── llm.py             # OpenAI-compatible 异步模型后端
-├── memory.py          # 分级记忆与角色信念
-├── models.py          # 状态、事件、动作和轨迹模型
-├── preference.py      # 自博弈轨迹转 DPO 偏好对
-├── self_play.py       # 并发自博弈、原子输出与统计
-├── cli.py             # 对战、数据、评估和训练命令
-└── training/dpo.py    # TRL DPO/LoRA 训练入口
+├── abstract_game.py          # 七人抽象博弈、信息集和离散动作空间
+├── bus.py                    # 异步消息总线和 Lamport 时钟
+├── cfr_preference.py         # CFR advantage 驱动的 DPO 偏好构造
+├── cognition.py              # Planner-Evaluator-Executor + Reflexion
+├── engine.py                 # LangGraph 游戏状态机
+├── evaluation.py             # challenger/baseline 双阵营评测
+├── iterative.py              # 多轮采样、聚类、CFR、DPO 编排
+├── latent.py                 # Embedding、K-Means 与潜在策略空间
+├── llm.py                    # OpenAI-compatible 异步模型后端
+├── memory.py                 # 分级记忆与角色信念
+├── models.py                 # 状态、事件、动作和轨迹模型
+├── preference.py             # 启发式偏好数据构造
+├── self_play.py              # 并发自博弈、原子输出与统计
+├── cli.py                    # 对战、数据、评估和训练命令
+└── training/
+    ├── deep_cfr.py           # External-Sampling Deep CFR 与 checkpoint
+    ├── dpo.py                # TRL DPO/LoRA 训练入口
+    └── torch_models.py       # Regret Network 与 Strategy Network
 ```
 
-原仓库的旧版脚本仍保留在根目录作为参考，新实现统一从 `src/wolfplay/` 启动。
+项目早期脚本仍保留在根目录作为历史版本，当前实现统一从 `src/wolfplay/` 启动。
 
 ## 测试
 
@@ -195,4 +261,4 @@ uv run ruff check src tests main.py
 
 ## 安全说明
 
-上游仓库历史中曾提交多个疑似真实 API Key。当前工作树已移除这些值，但 Git 历史中的凭据必须由持有者在服务商后台立即吊销；仅删除当前文件不能使旧 Key 失效。
+仓库早期历史中曾提交多个疑似真实 API Key。当前工作树已移除这些值，但 Git 历史中的凭据必须由持有者在服务商后台立即吊销；仅删除当前文件不能使旧 Key 失效。

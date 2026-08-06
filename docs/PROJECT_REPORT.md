@@ -1,6 +1,6 @@
-# WolfPlay：基于 LangGraph 的多智能体狼人杀博弈与 DPO 后训练框架
+# WolfPlay：基于 LangGraph 的多智能体狼人杀博弈与 Deep CFR/DPO 后训练框架
 
-> **项目状态**：可运行的工程原型；对战、自博弈、偏好数据构造、DPO/LoRA 训练入口和双阵营对照评测代码已具备。当前仓库**未执行真实模型训练与正式性能实验**，因此不声明任何胜率提升、策略涌现或论文复现结果。
+> **项目状态**：可运行的工程原型；对战、自博弈、潜在策略聚类、抽象博弈、Deep CFR、CFR 偏好数据、DPO/LoRA 训练入口、多轮编排和双阵营对照评测代码已具备。当前仓库**未执行正式模型训练与性能实验**，因此不声明任何胜率提升或策略涌现结果。
 
 ## 1. 项目概述
 
@@ -28,59 +28,40 @@ WolfPlay 是一个面向战略语言 Agent 研究与工程验证的七人狼人�
 | DPO 数据构造 | 已实现 | 使用合法性、启发式评分和终局奖励调整生成偏好对 |
 | DPO/LoRA 训练入口 | 已实现代码 | 未在本项目中执行真实模型训练 |
 | challenger/baseline 对照评测 | 已实现 | 支持两阵营互换，输出分阵营与总体统计 |
-| 完整 LSPO | 未实现 | 缺少潜在策略聚类、抽象博弈、Deep CFR 和迭代空间扩展 |
+| 发言 Embedding 与 K-Means | 已实现 | 支持离线 Hashing 与 OpenAI-compatible Embedding，按角色聚类并持久化 |
+| 抽象扩展式博弈 | 已实现 | 包含离散策略空间、信息集向量、私有知识、机会节点和奖励累计 |
+| External-Sampling Deep CFR | 已实现代码 | Advantage/Strategy 网络、Reservoir Buffer、rollout、checkpoint 和策略采样齐全 |
+| CFR 驱动 DPO 偏好 | 已实现 | 可回放语言轨迹并按网络 advantage 选择 chosen/rejected |
+| 多轮策略优化编排 | 已实现 | 串联采样、聚类、Deep CFR、DPO 和下一轮重新采样，支持断点续跑 |
 | “胜率提升 23%” | 无证据 | 不应出现在当前简历、报告或对外介绍中 |
 
 ---
 
-## 2. 项目背景与论文关系
+## 2. 项目背景与独立设计
 
-### 2.1 代码来源
+### 2.1 项目定位
 
-仓库 Git remote 指向 [seihn2/werewolf](https://github.com/seihn2/werewolf)。上游项目原本是一个支持多模型 API、6—12 人局和命令行交互的 AI 狼人杀原型，核心代码集中在根目录的控制器、玩家、记忆和模型管理脚本中。
+WolfPlay 是 seihn2 独立设计开发的多智能体战略语言博弈项目。项目目标不是只提供一个能够聊天的狼人杀 Demo，而是把环境状态、信息隔离、语言决策、博弈求解、偏好数据、后训练和评测拆成可测试、可替换的工程模块。
 
-当前工程在保留旧版脚本作为参考的同时，新增了独立的 `src/wolfplay/` Python 包，并将新的主流程统一到 `wolfplay` CLI。两部分代码的定位如下：
+### 2.2 代码演进
+
+仓库 Git remote 指向 [seihn2/werewolf](https://github.com/seihn2/werewolf)。根目录保留项目早期的多模型狼人杀脚本，当前主路径为独立的 `src/wolfplay/` Python 包，并统一通过 `wolfplay` CLI 启动。
 
 | 代码区域 | 定位 | 是否为当前主路径 |
 |---|---|---|
-| 根目录旧版脚本 | 上游多模型狼人杀原型与历史实现 | 否，仅保留参考 |
-| `src/wolfplay/` | LangGraph、认知闭环、自博弈、DPO 和评测的新工程实现 | 是 |
+| 根目录早期脚本 | 项目早期的控制器、玩家、记忆和模型管理实现 | 否，仅作为历史版本保留 |
+| `src/wolfplay/` | LangGraph、认知闭环、潜在策略、Deep CFR、DPO 和评测 | 是 |
 | `main.py` | 将根目录入口转发到 `wolfplay.cli:main` | 是 |
 
-### 2.2 参考论文
+### 2.3 技术目标与能力边界
 
-项目参考论文：
+项目围绕三条主线组织：
 
-- Zelai Xu, Wanjun Gu, Chao Yu, Yi Wu, Yu Wang. **Learning Strategic Language Agents in the Werewolf Game with Iterative Latent Space Policy Optimization**. ICML 2025, PMLR 267:69217-69239。
-- [PMLR 论文页](https://proceedings.mlr.press/v267/xu25h.html)
-- [arXiv:2502.04686](https://arxiv.org/abs/2502.04686)
+1. **可信对战环境**：标准七人配置、角色私有视图、Lamport 时钟、异步消息总线和确定性规则校验；
+2. **语言与离散策略联动**：Planner 生成候选，Embedding 与 K-Means 将发言映射为角色潜在策略，抽象博弈负责有限动作求解；
+3. **策略学习闭环**：External-Sampling Deep CFR 产生 advantage，语言轨迹回放器构造 DPO 偏好，多轮编排器负责重新采样和 artifact 管理。
 
-论文提出的 LSPO 由三部分组成：
-
-1. **Latent Space Construction**：通过自博弈收集自由文本发言，使用句向量和聚类形成离散潜在策略空间；
-2. **Policy Optimization in Latent Space**：把讨论动作替换为潜在策略，构造抽象扩展式博弈，并使用 CFR/Deep CFR 学习策略；
-3. **Latent Space Expansion**：根据潜在策略的 regret 构造偏好数据，通过 DPO 对齐语言模型，再进入下一轮潜在空间扩展。
-
-### 2.3 本项目与论文的真实关系
-
-本项目不是论文官方代码，也不是完整 LSPO 复现。它与论文的关系应表述为：
-
-> 采用论文的七人文本狼人杀规则和“自博弈轨迹 → 偏好数据 → DPO → 对照评测”的研究方向，完成一个可运行、可测试的工程化框架；目前以启发式策略评分替代论文中的潜在策略聚类与 Deep CFR regret，不宣称复现论文实验。
-
-对应关系如下：
-
-| 论文要素 | 本项目实现 | 对齐程度 |
-|---|---|---|
-| 七人规则：2 狼、1 预言家、1 医生、3 村民 | `PAPER_ROLES` 和完整夜昼循环 | 高 |
-| 私有夜间动作与公开白天信息 | audience 事件隔离、个人观察、个人记忆 | 高 |
-| 每次发言生成多个策略候选 | 启发式或 LLM Planner 生成候选 | 中高 |
-| 潜在策略聚类 | 未实现句向量与 k-means 聚类 | 无 |
-| 抽象扩展式博弈 | 未构造信息集、抽象动作空间和 payoff 模型 | 无 |
-| CFR/Deep CFR | 未实现 | 无 |
-| regret 驱动的偏好标签 | 使用规则 Evaluator 分数和终局 outcome bonus | 低 |
-| DPO 对齐 | 提供 TRL DPO/LoRA 训练入口 | 中 |
-| 迭代扩展潜在策略空间 | 需要人工重新自博弈和训练，没有自动迭代器 | 低 |
-| 双阵营对照评测 | 提供 challenger/baseline 阵营互换 CLI | 中高 |
+当前代码已经覆盖完整模块和小规模冒烟路径，但没有执行正式训练、千局采样或统计显著性评测。因此可以说明“算法代码与运行入口已实现”，不能说明“模型性能已经提升”。
 
 ---
 
@@ -98,8 +79,13 @@ WolfPlay 是一个面向战略语言 Agent 研究与工程验证的七人狼人�
 | 高阶策略模板 | 狼人启发式候选包含隐藏身份、伪装预言家、伪造验人和组织票型 | `src/wolfplay/cognition.py` |
 | 双推理后端 | 默认启发式模式可离线运行；模型模式调用 OpenAI-compatible `/chat/completions` | `src/wolfplay/llm.py` |
 | 自博弈数据生产 | 并发运行多局、固定种子序列、原子写入完整训练轨迹 | `src/wolfplay/self_play.py` |
-| DPO 偏好构造 | 对候选做合法性优先和分数排序，并用终局结果调整最终执行候选 | `src/wolfplay/preference.py` |
-| 可复现训练入口 | 数据校验、数据 SHA-256、训练 manifest、固定 seed、LoRA/全参 DPO | `src/wolfplay/training/dpo.py` |
+| 潜在策略构造 | Hashing/OpenAI-compatible Embedding、按角色 K-Means、代表文本和 JSON 持久化 | `src/wolfplay/latent.py` |
+| 抽象扩展式博弈 | 离散发言动作、夜间/投票目标、私有信息集、机会节点和奖励累计 | `src/wolfplay/abstract_game.py` |
+| Deep CFR | Advantage/Strategy 网络、Reservoir Buffer、External-Sampling、rollout 与 checkpoint | `src/wolfplay/training/deep_cfr.py` |
+| CFR 偏好构造 | 回放语言轨迹，将候选映射到抽象动作并按网络 advantage 排序 | `src/wolfplay/cfr_preference.py` |
+| 多轮策略编排 | 自动串联采样、聚类、CFR、DPO 数据、可选训练和下一轮后端交接 | `src/wolfplay/iterative.py` |
+| 启发式 DPO 偏好 | 对候选做合法性优先和分数排序，并用终局结果调整最终执行候选 | `src/wolfplay/preference.py` |
+| 可追溯训练入口 | 数据校验、数据 SHA-256、训练 manifest、固定 seed、LoRA/全参 DPO | `src/wolfplay/training/dpo.py` |
 | 训练后对照评测 | challenger/baseline 分别控制两阵营并交换阵营，输出明细与汇总 | `src/wolfplay/evaluation.py` |
 
 ---
@@ -113,16 +99,24 @@ flowchart TB
     subgraph Commands["命令层"]
         Play["play"]
         SelfPlay["self-play"]
+        BuildLatent["build-latent"]
+        TrainCFR["train-deep-cfr"]
+        BuildCFRDPO["build-cfr-dpo"]
         BuildDPO["build-dpo"]
         TrainDPO["train-dpo"]
+        Iterate["iterate-policy"]
         Evaluate["evaluate"]
         H2H["head-to-head"]
     end
 
     CLI --> Play
     CLI --> SelfPlay
+    CLI --> BuildLatent
+    CLI --> TrainCFR
+    CLI --> BuildCFRDPO
     CLI --> BuildDPO
     CLI --> TrainDPO
+    CLI --> Iterate
     CLI --> Evaluate
     CLI --> H2H
 
@@ -156,17 +150,30 @@ flowchart TB
 
     subgraph DataTraining["数据与训练层"]
         Trajectory["Self-play JSONL"]
-        Preference["prompt / chosen / rejected"]
+        Latent["Embedding + K-Means"]
+        Abstract["抽象博弈 + 信息集"]
+        CFR["External-Sampling Deep CFR"]
+        CFRCheckpoint["Regret / Strategy checkpoint"]
+        Preference["CFR 或启发式 DPO JSONL"]
         Trainer["TRL DPOTrainer + LoRA"]
         Checkpoint["Checkpoint + training_manifest.json"]
         Serving["外部 OpenAI-compatible 推理服务"]
     end
 
     SelfPlay --> Trajectory
+    Trajectory --> BuildLatent --> Latent --> Abstract
+    Abstract --> TrainCFR --> CFR --> CFRCheckpoint
+    Trajectory --> BuildCFRDPO --> Preference
+    CFRCheckpoint --> BuildCFRDPO
     Trajectory --> BuildDPO --> Preference
     Preference --> TrainDPO --> Trainer --> Checkpoint
     Checkpoint -. "需外部部署" .-> Serving
     Serving --> H2H
+    Iterate --> SelfPlay
+    Iterate --> BuildLatent
+    Iterate --> TrainCFR
+    Iterate --> BuildCFRDPO
+    Iterate --> TrainDPO
     Trajectory --> Evaluate
 ```
 
@@ -175,7 +182,7 @@ flowchart TB
 - **游戏真值集中管理，Agent 只接收投影视图**：`GameRuntime` 持有完整状态，但传入 Agent 的是 `AgentObservation`，其中只包含自己的角色、允许知道的队友、公开玩家信息、合法目标、可见事件和个人记忆。
 - **规则与语言模型解耦**：LLM 只负责提出候选；动作合法性、策略评分、胜负和状态变化均由本地代码控制。
 - **对战依赖轻量，训练依赖可选**：普通对战不需要安装 PyTorch、Transformers、Datasets、PEFT 和 TRL。
-- **训练后模型通过服务接回环境**：DPO 输出不能被 `GameRuntime` 直接从本地 checkpoint 加载，需要先部署为 OpenAI-compatible 服务。
+- **训练后模型通过可替换后端接回环境**：CLI 支持逐轮 OpenAI-compatible 服务配置，库级 `backend_factory` 可以接入自定义本地 checkpoint 加载器。
 
 ---
 
@@ -351,7 +358,7 @@ flowchart LR
 - 狼人发言候选包含隐藏身份、悍跳预言家、伪造验人、组织票型等模板；
 - 预言家可基于已确认狼人选择公开身份、组织投票或保守引导；
 - 医生倾向保护公开预言家声明者，并避免明显高风险目标；
-- 同一观察下保持确定性，便于离线测试和复现。
+- 同一观察下保持确定性，便于离线测试和重复验证。
 
 #### LLM Planner
 
@@ -373,7 +380,7 @@ flowchart LR
 - 医生对预言家声明者的保护价值；
 - 发言是否泄露隐藏身份；
 - 策略模板的启发式 bonus；
-- 基于游戏 ID、轮次、玩家和候选签名的稳定微扰，用于可复现地打破同分。
+- 基于游戏 ID、轮次、玩家和候选签名的稳定微扰，用于可重复地打破同分。
 
 候选评估使用 `asyncio.gather` 并行执行。最终选择首先保证“实际规则合法”，再比较分数，避免伪造高分绕过规则。
 
@@ -392,7 +399,7 @@ flowchart LR
 - 如仍非法，再执行一次紧急规则修复；
 - 修复原因写入 `DecisionTrace.reflection` 和个人 Reflection Memory。
 
-它能够降低工程上的非法动作和明显身份泄露，但不等于论文意义上的学习型自我反思，也不能证明降低了“逻辑幻觉率”。
+它能够降低工程上的非法动作和明显身份泄露，但不等于通过梯度学习获得的开放式自我反思，也不能证明降低了“逻辑幻觉率”。
 
 ### 8.6 “悍跳”能力应如何表述
 
@@ -402,7 +409,7 @@ flowchart LR
 
 ---
 
-## 9. 自博弈、DPO 与训练后评测闭环
+## 9. 自博弈、Deep CFR、DPO 与训练后评测闭环
 
 ### 9.1 完整数据流
 
@@ -410,19 +417,23 @@ flowchart LR
 flowchart LR
     A["启发式或基础模型 Agent"] --> B["self-play 多局对战"]
     B --> C["GameResult JSONL"]
-    C --> D["build-dpo"]
-    D --> E["合法性 + 启发式评分 + outcome bonus"]
-    E --> F["prompt / chosen / rejected JSONL"]
-    F --> G["数据校验 + SHA-256"]
-    G --> H["TRL DPOTrainer"]
-    H --> I["LoRA 或全参数 checkpoint"]
-    I --> J["外部模型服务"]
-    J --> K["head-to-head"]
-    K --> L["狼人侧 / 村民侧 / 总体统计"]
-    L -. "人工分析后进入下一轮" .-> B
+    C --> D["Embedding + 按角色 K-Means"]
+    D --> E["离散潜在策略空间"]
+    E --> F["七人抽象博弈"]
+    F --> G["External-Sampling Deep CFR"]
+    G --> H["Regret / Strategy checkpoint"]
+    C --> I["语言轨迹回放"]
+    H --> I
+    I --> J["CFR advantage DPO JSONL"]
+    J --> K["TRL DPOTrainer"]
+    K --> L["LoRA 或全参数 checkpoint"]
+    L --> M["下一轮模型后端"]
+    M --> B
+    M --> N["head-to-head"]
+    N --> O["狼人侧 / 村民侧 / 总体统计"]
 ```
 
-当前闭环的最后一条回边需要人工执行，不是论文中的自动 LSPO 迭代器。
+`iterate-policy` 已负责逐轮 artifact 编排、断点续跑和上一轮 DPO checkpoint 交接。若使用外部服务，调用方需要把该 checkpoint 部署为下一轮 `WOLFPLAY_ITERATION_<N>_*` 后端；库接口也允许通过 `backend_factory` 直接接入自定义本地模型加载器。
 
 ### 9.2 自博弈轨迹
 
@@ -446,7 +457,7 @@ flowchart LR
 {"prompt":"<当前玩家可见观察>","chosen":"<偏好候选>","rejected":"<非偏好候选>"}
 ```
 
-构造规则：
+启发式 `build-dpo` 构造规则：
 
 1. 每条决策至少需要两个候选，候选和评分数量必须一致；
 2. 合法候选始终优先于非法候选；
@@ -456,7 +467,16 @@ flowchart LR
 6. `--winning-only` 可只保留胜方角色轨迹；
 7. 输入非法、空数据或过滤后无偏好对时明确失败，且不会覆盖已有输出文件。
 
-这是一种 **outcome-aware heuristic preference**，不是论文中基于 Deep CFR counterfactual regret 的偏好标签。
+这是一种 **outcome-aware heuristic preference**，适合作为无 Torch 环境下的基础数据路径。
+
+Deep CFR `build-cfr-dpo` 路径会：
+
+1. 使用对局中的真实角色分配初始化抽象状态；
+2. 按决策轨迹顺序回放夜间动作、潜在策略发言和投票；
+3. 将每个语言候选映射到角色策略簇或离散目标动作；
+4. 在对应信息集上读取 Advantage/Regret Network 输出；
+5. 选择 advantage 最高且文本不同的候选作为 chosen，最低候选作为 rejected；
+6. 将动作 ID、advantage、角色、阶段和 CFR 迭代数写入 metadata。
 
 ### 9.4 DPO/LoRA 训练入口
 
@@ -499,7 +519,7 @@ flowchart LR
 ### 9.6 评测方法限制
 
 - 两个阵营阶段使用连续但不同的 seed 区间，并非同一角色分配的严格镜像配对；
-- 外部模型默认 temperature 为 `0.7`，当前接口未传模型侧 seed，环境 seed 不能保证 LLM 输出完全复现；
+- 外部模型默认 temperature 为 `0.7`，当前接口未传模型侧 seed，环境 seed 不能保证 LLM 输出完全重复；
 - 尚未计算置信区间、显著性检验、Elo、每角色指标或模型调用成本；
 - 达到 `max_rounds` 会计为平局，最大轮数会影响胜率；
 - 当前实现按阵营统一使用同一后端，不评估同阵营内部不同模型混合；
@@ -515,25 +535,31 @@ wolfplay/
 ├── src/wolfplay/
 │   ├── __init__.py            # 包元信息
 │   ├── __main__.py            # python -m wolfplay 入口
+│   ├── abstract_game.py       # 七人抽象博弈、信息集、离散动作和奖励
 │   ├── bus.py                 # 异步消息总线、Lamport 时钟、视图隔离
-│   ├── cli.py                 # play/self-play/build-dpo/evaluate/head-to-head/train-dpo
+│   ├── cfr_preference.py      # Deep CFR advantage 驱动的 DPO 偏好
+│   ├── cli.py                 # 对战、聚类、CFR、DPO、迭代和评测命令
 │   ├── cognition.py           # Planner-Evaluator-Executor + Reflexion
 │   ├── engine.py              # LangGraph 七人对局状态机
 │   ├── evaluation.py          # challenger/baseline 双阵营互换评测
+│   ├── iterative.py           # 多轮采样、聚类、CFR 和 DPO 编排
+│   ├── latent.py              # Embedding、K-Means 和潜在策略空间
 │   ├── llm.py                 # OpenAI-compatible 异步后端
 │   ├── memory.py              # 分级记忆与角色信念
 │   ├── models.py              # 状态、事件、动作、观察和轨迹数据模型
 │   ├── preference.py          # 自博弈轨迹转 DPO 偏好对
 │   ├── self_play.py           # 并发自博弈、JSONL 和汇总统计
 │   └── training/
-│       └── dpo.py             # 数据校验、训练 manifest、TRL DPO/LoRA
+│       ├── deep_cfr.py        # External-Sampling、Buffer、训练与 checkpoint
+│       ├── dpo.py             # 数据校验、训练 manifest、TRL DPO/LoRA
+│       └── torch_models.py    # Advantage/Regret 与 Strategy Network
 ├── tests/                     # 对战、隔离、记忆、认知、数据、训练与评测测试
 ├── docs/plans/                # 工程设计记录
 ├── docs/PROJECT_REPORT.md     # 本项目报告
 ├── .env.example               # 单模型与 challenger/baseline 环境变量示例
 ├── pyproject.toml             # 包、依赖、CLI、pytest 和 Ruff 配置
 ├── main.py                    # 根目录兼容入口
-└── 其他根目录脚本             # 上游旧版狼人杀实现，非新框架主路径
+└── 其他根目录脚本             # 项目早期狼人杀实现，非新框架主路径
 ```
 
 ---
@@ -602,7 +628,49 @@ uv run wolfplay self-play \
 
 如需使用基础模型生成候选，将 `--backend` 改为 `openai-compatible` 并配置 `WOLFPLAY_*`。
 
-### 11.6 构造 DPO 数据
+### 11.6 构建潜在策略空间
+
+离线默认 Embedder：
+
+```bash
+uv run wolfplay build-latent \
+  --input data/generated/self_play.jsonl \
+  --output data/generated/latent_space.json \
+  --hash-dimensions 256 \
+  --werewolf-clusters 3 \
+  --seer-clusters 2 \
+  --doctor-clusters 2 \
+  --villager-clusters 2
+```
+
+真实 Embedding 服务使用 `WOLFPLAY_EMBEDDING_BASE_URL`、`WOLFPLAY_EMBEDDING_API_KEY` 和 `WOLFPLAY_EMBEDDING_MODEL`，并增加 `--embedding-backend openai-compatible`。
+
+### 11.7 训练 Deep CFR
+
+```bash
+uv run wolfplay train-deep-cfr \
+  --latent-space data/generated/latent_space.json \
+  --output-dir checkpoints/wolfplay-cfr \
+  --iterations 100 \
+  --traversals-per-player 16 \
+  --advantage-train-steps 200 \
+  --strategy-train-steps 400 \
+  --batch-size 256 \
+  --max-traversal-depth 64
+```
+
+也可以使用独立入口 `uv run wolfplay-train-deep-cfr`。输出包含逐轮 checkpoint、最终 `deep_cfr.pt` 和 `deep_cfr_manifest.json`。
+
+### 11.8 构造 CFR-DPO 数据
+
+```bash
+uv run wolfplay build-cfr-dpo \
+  --input data/generated/self_play.jsonl \
+  --checkpoint checkpoints/wolfplay-cfr \
+  --output data/generated/dpo_cfr.jsonl
+```
+
+### 11.9 构造启发式 DPO 数据
 
 ```bash
 uv run wolfplay build-dpo \
@@ -620,7 +688,7 @@ uv run wolfplay build-dpo \
   --winning-only
 ```
 
-### 11.7 汇总已有自博弈数据
+### 11.10 汇总已有自博弈数据
 
 ```bash
 uv run wolfplay evaluate \
@@ -629,13 +697,13 @@ uv run wolfplay evaluate \
 
 该命令只统计已有轨迹中的阵营胜负，不比较训练前后模型。
 
-### 11.8 DPO + LoRA 训练
+### 11.11 DPO + LoRA 训练
 
 基础入口：
 
 ```bash
 uv run wolfplay train-dpo \
-  --dataset data/generated/dpo_pairs.jsonl \
+  --dataset data/generated/dpo_cfr.jsonl \
   --model Qwen/Qwen3-0.6B \
   --output-dir checkpoints/wolfplay-dpo \
   --epochs 2 \
@@ -650,7 +718,7 @@ uv run wolfplay train-dpo \
 
 ```bash
 uv run wolfplay-train-dpo \
-  --dataset data/generated/dpo_pairs.jsonl \
+  --dataset data/generated/dpo_cfr.jsonl \
   --model Qwen/Qwen3-0.6B \
   --output-dir checkpoints/wolfplay-dpo \
   --seed 42 \
@@ -663,7 +731,20 @@ uv run wolfplay-train-dpo \
 
 全参数训练增加 `--no-lora`。训练代码会生成 `training_manifest.json`，但本报告未执行该训练命令。
 
-### 11.9 训练后模型与基线双阵营评测
+### 11.12 多轮策略优化
+
+```bash
+uv run wolfplay iterate-policy \
+  --output-dir artifacts/iterations \
+  --iterations 3 \
+  --games-per-iteration 100 \
+  --cfr-iterations 100 \
+  --dpo-model Qwen/Qwen3-0.6B
+```
+
+默认断点续跑。使用外部模型重新采样时，第一轮读取 `WOLFPLAY_*`，后续轮次读取 `WOLFPLAY_ITERATION_2_*`、`WOLFPLAY_ITERATION_3_*` 等环境变量。
+
+### 11.13 训练后模型与基线双阵营评测
 
 首先分别将训练后模型和基线模型部署为 OpenAI-compatible 服务，然后配置：
 
@@ -723,17 +804,22 @@ uv run wolfplay head-to-head \
 
 ### 12.2 当前本地验收快照
 
-> 快照日期：2026-08-05。最终测试数量与静态检查结果以本节记录的命令输出为准；模型训练和真实模型对照实验未执行。
+> 快照日期：2026-08-06。最终测试数量与静态检查结果以本节记录的命令输出为准；仅执行了最小 Deep CFR Torch 冒烟，正式模型训练和真实模型对照实验未执行。
 
 | 检查项 | 当前结果 | 覆盖范围 |
 |---|---|---|
-| `pytest` | `48 passed` | 完整对局、视图隔离、时钟、记忆、认知修复、自博弈、偏好数据、训练接线、双阵营评测 |
+| `pytest` | `61 passed` | 对战、隔离、记忆、认知、自博弈、Embedding、K-Means、抽象博弈、Deep CFR、CFR-DPO、迭代器、CLI 和评测 |
 | `ruff check` | `All checks passed!` | `src`、`tests`、`main.py` |
 | 离线单局 | 已由自动测试覆盖 | 七人角色数量、发言、终局事件与胜者 |
-| 同 seed 复现 | 已由自动测试覆盖 | 启发式模式下完整 `GameResult` 一致 |
+| 同 seed 重复 | 已由自动测试覆盖 | 启发式模式下完整 `GameResult` 一致 |
 | 私有角色不可见 | 已由自动测试覆盖 | 外部玩家看不到他人 `role_assignment` |
 | 自博弈并发顺序 | 已由自动测试覆盖 | 并发执行后仍按 seed 顺序输出，临时文件被清理 |
 | DPO 数据 | 已由自动测试覆盖 | 稳定排序、outcome bonus、非法候选、输入错误和原子写入 |
+| 潜在策略 | 已由自动测试覆盖 | Hashing Embedding 确定性、K-Means 分组、角色空间持久化和文本分配 |
+| 抽象博弈 | 已由自动测试覆盖 | 角色机会节点、固定信息向量、合法动作和完整终止 |
+| Deep CFR | 真实 Torch 冒烟通过 | 一轮 External-Sampling、网络更新、checkpoint 加载和平均策略采样；不代表收敛 |
+| CFR-DPO | CLI 冒烟生成 16 对 | 对局回放、候选映射和 checkpoint advantage 排序 |
+| 多轮编排 | 自动测试覆盖 | 两轮 artifact 生成、上一轮 DPO checkpoint 交接和断点结构 |
 | DPO 训练接线 | mock 测试覆盖 | deterministic 参数、LoRA、manifest 和全参配置 |
 | `head-to-head` | 已完成启发式烟测 | 验证双方阵营互换和统计结构；不代表模型效果 |
 | 真实 DPO 训练 | 未执行 | 不提供 loss、checkpoint 质量或 GPU 资源结论 |
@@ -754,24 +840,20 @@ uv run wolfplay head-to-head \
 
 ---
 
-## 13. 与完整 LSPO 的差距
+## 13. 策略学习能力边界
 
-| 维度 | 论文 LSPO | 当前 WolfPlay | 需要补充 |
+| 维度 | 当前代码 | 当前验证 | 尚未完成 |
 |---|---|---|---|
-| 数据规模 | 每轮用大量自博弈收集讨论动作，论文实现使用 1000 局 | 提供任意局数运行器，未执行论文规模实验 | 固定实验配置并实际运行 |
-| 候选执行 | 生成多个发言候选并随机选择，以扩大探索 | Evaluator 通常选择最高分候选 | 增加可控探索策略和行为策略日志 |
-| 策略表示 | 句向量 + k-means 构造每角色潜在策略簇 | 使用人工命名的 strategy 字段 | 实现 embedding、聚类、簇解释和版本化 |
-| 抽象博弈 | 将讨论动作替换为潜在策略，构造 EFG | 直接运行语言/模板动作 | 定义信息集、动作空间、转移和 payoff |
-| 奖励 | 胜负、生存、投票和淘汰等细粒度 reward | 终局胜负 + 启发式 candidate score | 建立可审计 reward 与 credit assignment |
-| 策略优化 | Deep CFR 近似 regret 并求潜在空间策略 | 无 CFR 网络或 replay buffer | 实现采样树、regret/value 网络和训练循环 |
-| DPO 标签 | 根据潜在策略 regret 生成偏好 | 合法性 + 启发式分数 + outcome bonus | 改为 solver/regret 驱动偏好 |
-| 迭代机制 | DPO 后重新采样、聚类并扩大潜在空间 | 训练、自博弈和评测由 CLI 人工串联 | 增加 experiment orchestrator 和迭代状态 |
-| 评测 | 固定对手、多轮实验、均值与误差 | 有双阵营互换框架，无正式实验 | 配对 seed、置信区间、显著性和多次重复 |
-| 中间指标 | 角色预测准确率、潜在空间演化等 | 仅胜负、轮数和轨迹 | 增加角色预测、策略覆盖率、非法率和回退率 |
+| 发言表示 | Hashing/OpenAI-compatible Embedding，按角色 K-Means，中心点与代表文本持久化 | 确定性、聚类分离和序列化测试 | 大规模语义质量、簇稳定性和人工解释评审 |
+| 抽象博弈 | 七人角色机会节点、夜间动作、潜在策略发言、同步投票、信息集向量和细粒度奖励 | 随机合法策略可完整终止，信息向量维度固定 | 与语言环境行为分布的系统校准 |
+| Deep CFR | Advantage/Regret Network、Strategy Network、Reservoir Buffer、External-Sampling、深度限制 rollout | 已完成一轮小规模真实 Torch 冒烟，checkpoint 可加载并采样 | 收敛曲线、exploitability 代理指标和大规模训练 |
+| CFR-DPO | 真实语言轨迹回放、候选到离散动作映射、按网络 advantage 生成偏好 | 冒烟链路生成 16 条偏好数据 | 人工偏好一致性、训练后行为变化和泛化验证 |
+| 多轮编排 | 自动执行采样、聚类、CFR、DPO 数据、可选 DPO 训练和下一轮后端交接 | 后端 checkpoint 交接与断点续跑由自动测试覆盖 | 生产级模型自动部署、失败恢复和分布式调度 |
+| 效果评测 | 双阵营互换对战与原始结果导出 | 工程路径可运行 | 严格镜像 seed、置信区间、显著性、多模型与多随机种子 |
 
 因此，当前项目最准确的定位是：
 
-> **LSPO-inspired 的多智能体狼人杀工程框架与 DPO 数据/训练/评测脚手架，而不是完整 LSPO 算法复现。**
+> **WolfPlay 已具备完整的多智能体对战、潜在策略、Deep CFR、DPO 数据和多轮编排代码；当前证据证明代码可运行，不证明模型性能已经提升。**
 
 ---
 
@@ -781,17 +863,19 @@ uv run wolfplay head-to-head \
 
 | 风险 | 影响 | 优先级 | 建议 |
 |---|---|---:|---|
-| 偏好标签由同一启发式 Evaluator 产生 | 模型可能只模仿规则评分器，形成闭环偏差 | P0 | 引入独立 judge、人工抽检和 solver/regret 标签 |
+| 启发式偏好路径仍由同一 Evaluator 产生 | 使用 `build-dpo` 时模型可能只模仿规则评分器 | P1 | 正式训练优先使用 `build-cfr-dpo`，并保留人工抽检 |
+| 抽象语言动作只通过策略簇影响后续决策 | 聚类动作与自然语言真实影响之间可能存在建模偏差 | P0 | 校准簇代表文本、加入行为模型和离线反事实评估 |
+| 深度限制 rollout 带来估计偏差 | CFR advantage 可能受截断深度和当前策略影响 | P0 | 对不同深度做敏感性分析并记录 rollout 方差 |
+| 多角色共享网络的博弈收敛缺少实证 | 七人非零和环境比双人零和问题更复杂 | P0 | 增加 regret 诊断、策略熵和 exploitability 代理指标 |
 | `head-to-head` 不是严格镜像配对 | 环境 seed 和角色分配差异可能混入模型差异 | P0 | 同一 seed、同一角色分配做 A/B 阵营翻转 |
-| 外部 LLM 采样不可完全复现 | 相同环境 seed 仍可能得到不同语言动作 | P0 | 记录服务版本，支持 temperature/seed/max_tokens 配置 |
+| 外部 LLM 采样不可完全重复 | 相同环境 seed 仍可能得到不同语言动作 | P0 | 记录服务版本，支持 temperature/seed/max_tokens 配置 |
 | checkpoint 到推理服务缺少仓库内实现 | 训练完成后仍需人工部署 | P0 | 增加 Transformers/vLLM serving 指南或本地 backend |
 | 自博弈轨迹聚合所有私有 observation | 误当公开日志发布会泄露角色信息 | P0 | 区分 public transcript 与 privileged training trace |
-| 当前没有正式训练与评测结果 | 无法证明 DPO 提升或高阶策略学习 | P0 | 先完成小规模可复现实验，再扩大规模 |
+| 当前没有正式训练与评测结果 | 无法证明 DPO 提升或高阶策略学习 | P0 | 先完成小规模可重复实验，再扩大规模 |
 | 分级记忆不跨局持久化 | 不能支撑长期学习或玩家画像 | P1 | 增加跨局存储、摘要和检索策略 |
-| 没有潜在策略与 CFR | 与论文核心算法差距大 | P1 | 实现 latent strategy pipeline 与 Deep CFR |
 | 旧版根目录代码与新包并存 | 新读者可能误用旧入口或混淆行为 | P1 | 后续迁移、归档或明确 legacy 目录 |
-| 上游历史可能包含敏感 API 凭据 | 凭据泄露和供应链风险 | P0 | 轮换凭据、清理 Git 历史、接入 secret scanning |
-| 仓库当前未见明确 LICENSE | 对外发布和二次分发的授权边界不清 | P0 | 确认上游授权后补充许可证和第三方声明 |
+| 早期历史可能包含敏感 API 凭据 | 凭据泄露和供应链风险 | P0 | 轮换凭据、清理 Git 历史、接入 secret scanning |
+| 仓库当前未见明确 LICENSE | 对外发布和二次分发的授权边界不清 | P0 | 确认项目授权边界后补充许可证和第三方声明 |
 
 ### 14.2 后续路线
 
@@ -811,21 +895,21 @@ uv run wolfplay head-to-head \
 - 建立 train/dev/test 轨迹划分，避免用训练轨迹直接评估；
 - 增加候选合法率、Reflexion 触发率、回退率和角色预测准确率。
 
-#### Phase 2：完整 LSPO 核心
+#### Phase 2：算法强化与可解释性
 
-- 按角色收集发言候选并生成句向量；
-- 对潜在策略做聚类、命名、可视化和版本管理；
-- 构造抽象扩展式博弈的信息集与 reward；
-- 实现 Deep CFR regret/value 网络、buffer 和有限深度搜索；
-- 使用 regret 替代启发式分数构造 DPO 偏好；
-- 自动执行“采样 → 聚类 → CFR → DPO → 重新采样”多轮迭代。
+- 增加真实 Embedding 批处理缓存、簇命名、可视化和版本对比；
+- 校准抽象奖励与语言环境结果，增加反事实一致性检查；
+- 输出 regret 分布、策略熵、buffer 覆盖率和 rollout 方差；
+- 支持 checkpoint 恢复后继续增加迭代，而不是只加载推理策略；
+- 增加本地模型 backend，使 DPO checkpoint 可直接进入下一轮自博弈；
+- 对多轮策略空间扩展进行自动回归和 artifact lineage 检查。
 
-#### Phase 3：规模化与研究复现
+#### Phase 3：规模化实验
 
 - 分布式自博弈和失败恢复；
 - 实验追踪、数据 lineage 和 checkpoint registry；
 - 多基础模型、多 opponent pool 和交叉评测；
-- 对照论文的预测准确率、潜在空间演化、消融实验和迭代收敛分析。
+- 角色预测准确率、潜在空间演化、消融实验和迭代收敛分析。
 
 ---
 
@@ -837,30 +921,31 @@ uv run wolfplay head-to-head \
 
 ### 15.2 推荐项目描述
 
-> 独立开发七人狼人杀多智能体仿真框架，使用 LangGraph 条件状态机编排夜间行动、白天讨论、同步投票和胜负循环；实现基于 asyncio 的中心化消息总线、Lamport 逻辑时钟、角色视图隔离和单局分级记忆；设计 Planner-Evaluator-Executor 与规则型 Reflexion 决策闭环，并完成自博弈轨迹、DPO 偏好数据、TRL/LoRA 训练入口及 challenger/baseline 双阵营互换评测链路。
+> 独立开发七人狼人杀多智能体仿真框架，使用 LangGraph 条件状态机编排夜间行动、白天讨论、同步投票和胜负循环；实现基于 asyncio 的中心化消息总线、Lamport 逻辑时钟、角色视图隔离和单局分级记忆；设计 Planner-Evaluator-Executor 与规则型 Reflexion 决策闭环，并完成角色潜在策略聚类、抽象博弈、External-Sampling Deep CFR、CFR-DPO 偏好、TRL/LoRA 训练入口及双阵营互换评测链路。
 
 ### 15.3 推荐拆分为三条经历
 
 - 使用 Python、asyncio 与 LangGraph 构建七人狼人杀多智能体环境，通过条件边实现夜间行动、白天讨论、投票、胜负判断和多轮循环，支持固定 seed 的离线完整对局。
 - 设计 audience 级消息隔离、Lamport 逻辑时钟和玩家独立分级记忆，使角色分配、狼人队友、预言家查验和医生选择只进入授权 Agent 的观察与记忆。
-- 实现 Planner-Evaluator-Executor + 规则型 Reflexion、自博弈轨迹到 DPO 偏好对的数据管线、TRL/LoRA 训练入口，以及训练后模型与基线按狼人/村民阵营互换的评测 CLI。
+- 实现发言 Embedding 与角色 K-Means 潜在策略空间，构造包含私有信息集和离散动作的七人抽象博弈，并实现 Advantage/Strategy 网络、Reservoir Buffer 与 External-Sampling Deep CFR。
+- 将语言候选映射到抽象动作，使用 CFR advantage 构造 DPO 偏好，并实现“自博弈 → 聚类 → CFR → DPO → 重新采样”的可恢复多轮编排和双阵营评测 CLI。
 
 ### 15.4 可以补充但需准确限定的表述
 
 - “内置悍跳预言家、伪造验人和组织票型等狼人候选策略模板”；
 - “支持 OpenAI-compatible 模型接入，异常或非法候选可回退到启发式策略”；
-- “训练入口记录数据 SHA-256、超参数、seed 和依赖版本，便于复现”；
-- “当前实现参考 LSPO 的规则和训练方向，但未复现潜在空间聚类与 Deep CFR”。
+- “训练入口记录数据 SHA-256、超参数、seed 和依赖版本，便于重复验证”；
+- “Deep CFR 代码已完成小规模冒烟，尚未执行正式收敛和胜率实验”。
 
 ### 15.5 当前禁止使用的表述
 
 - “胜率提升 23%”；
-- “完整复现 ICML 2025 LSPO”；
+- “Deep CFR 已收敛到近似均衡”；
 - “通过 DPO 学会悍跳”；
 - “显著降低逻辑幻觉”；
 - “支持跨对局长期记忆”；
 - “完成千局自博弈和大规模实验”；
-- “达到论文同等性能”。
+- “达到行业或公开基准同等性能”。
 
 只有在固定实验协议、真实运行数据和统计分析完成后，才可以把结果写成：
 
@@ -898,17 +983,17 @@ Planner 只提出多个候选；Evaluator 根据规则、角色信念、公开�
 
 ### Q7：DPO 偏好对如何生成？
 
-每次决策保存 observation、多个候选和 Evaluator 评分。构造器先保证合法候选优先，再按分数排序；最终执行候选如果所属阵营获胜则加 outcome bonus，失败则扣除。最高优先候选作为 chosen，最低且文本不同的候选作为 rejected。
+系统有两条路径。`build-dpo` 使用候选合法性、Evaluator 分数和终局 outcome bonus；`build-cfr-dpo` 则回放抽象博弈状态，将语言候选映射到潜在策略或目标动作，并使用对应信息集上的 Deep CFR advantage 排序。正式策略学习应优先使用第二条路径，第一条路径用于离线基线和故障回退。
 
-### Q8：这与论文 LSPO 的 DPO 数据有什么不同？
+### Q8：Deep CFR 如何为语言候选提供偏好？
 
-论文先把语言映射到潜在策略簇，再用 Deep CFR 计算潜在策略 regret，并根据 regret 产生偏好。本项目没有潜在空间和 CFR，偏好来自规则 Evaluator 与终局胜负，所以只是 LSPO-inspired 的工程替代方案。
+发言候选先通过与训练阶段相同的 Embedder 映射到当前角色的 K-Means 策略簇。回放器根据真实角色、轮次、存活状态、私有验人和公开策略历史重建信息集向量，再查询该角色的 Advantage/Regret Network。候选对应动作的 advantage 越高，越优先成为 chosen；非法或低 advantage 候选成为 rejected。
 
 ### Q9：为什么要让 challenger 和 baseline 交换阵营？
 
 狼人和村民阵营的任务、信息和天然胜率不同。只让训练后模型固定玩一个阵营，无法区分“模型更强”还是“阵营更强”。双阵营互换至少能分别报告 challenger 的狼人侧和村民侧表现，但当前还需改造成同 seed 镜像配对并增加置信区间。
 
-### Q10：固定 seed 是否能保证模型评测完全复现？
+### Q10：固定 seed 是否能保证模型评测完全重复？
 
 只能保证角色分配、平票处理和启发式决策等本地随机过程。外部模型默认 temperature 为 0.7，且接口没有模型侧 seed，因此语言输出仍可能变化。正式实验需要固定服务版本、解码参数，并记录完整请求和响应元数据。
 
@@ -918,11 +1003,11 @@ Working、Episodic、Semantic 和 Reflection 能支持一局内跨轮次回忆�
 
 ### Q12：当前训练闭环最主要的偏差是什么？
 
-Planner 候选、Evaluator 分数和偏好标签都来自同一套启发式体系，模型容易学习评分器偏好而不是真实博弈最优策略。需要引入独立 judge、人工抽检或 Deep CFR regret，并用严格留出的对照评测验证泛化。
+Deep CFR 求解的是离散抽象环境，语言发言对后续玩家的真实影响被压缩为策略簇历史；同时深度限制 rollout 和多角色共享网络也会引入估计偏差。因此需要用人工簇解释、不同深度敏感性、regret 分布和严格留出的语言环境对照评测验证迁移效果。
 
-### Q13：如果要完整复现 LSPO，下一步最关键是什么？
+### Q13：下一步最关键的工作是什么？
 
-不是先扩大 DPO 模型，而是先完成潜在策略表示和 solver：按角色采集发言、做 embedding 与聚类、定义抽象博弈信息集和 reward、实现 Deep CFR，并使用 regret 重新标注偏好。没有这一层，迭代 DPO 仍然不属于完整 LSPO。
+不是继续堆模块，而是执行可信的小规模闭环：固定模型和数据版本，实际运行多轮自博弈、聚类、Deep CFR 与 DPO；将训练 checkpoint 接入下一轮模型后端；记录 regret、策略熵、候选覆盖率和模型错误；最后用同 seed 镜像对战和置信区间判断训练是否有效。
 
 ### Q14：如何证明“胜率提升”不是偶然？
 
@@ -932,6 +1017,6 @@ Planner 候选、Evaluator 分数和偏好标签都来自同一套启发式体�
 
 ## 17. 结论
 
-WolfPlay 当前已经形成一个结构清晰的多智能体战略语言博弈工程：LangGraph 负责游戏状态机，消息总线与分级记忆负责个人视图，Planner-Evaluator-Executor 与 Reflexion 负责候选决策和规则兜底，自博弈、DPO 和 `head-to-head` 组成训练与评测脚手架。
+WolfPlay 当前已经形成一个结构清晰的多智能体战略语言博弈工程：LangGraph 负责游戏状态机，消息总线与分级记忆负责个人视图，Planner-Evaluator-Executor 与 Reflexion 负责候选决策和规则兜底，潜在策略、抽象博弈、Deep CFR、CFR-DPO、多轮编排和 `head-to-head` 组成策略学习与评测链路。
 
-项目最有价值的部分是**代码链路完整且边界可解释**：即使没有外部模型，也能离线运行、测试和生成数据；接入模型后，规则控制仍保留在本地。与此同时，当前代码没有潜在策略聚类、抽象博弈或 Deep CFR，也没有真实训练和胜率实验，因此对外定位必须保持为“LSPO-inspired 工程框架”，而非论文完整复现或已有性能突破。
+项目最有价值的部分是**代码链路完整且边界可解释**：即使没有外部模型，也能离线运行、聚类、遍历抽象状态并生成数据；安装训练依赖后，可以执行真实网络更新、保存 checkpoint 并构造 CFR 偏好。与此同时，当前仍没有正式训练和胜率实验，因此对外只能说明“算法代码已实现并通过小规模冒烟”，不能宣称已有性能突破。

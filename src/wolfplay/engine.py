@@ -26,7 +26,7 @@ from .models import (
     Winner,
 )
 
-PAPER_ROLES = [
+STANDARD_7P_ROLES = [
     Role.WEREWOLF,
     Role.WEREWOLF,
     Role.SEER,
@@ -75,7 +75,7 @@ class GameRuntime:
         self.graph = self._build_graph()
 
     def _new_game_state(self) -> GameState:
-        roles = PAPER_ROLES.copy()
+        roles = STANDARD_7P_ROLES.copy()
         self.rng.shuffle(roles)
         players = {
             f"player_{index}": PlayerState(
@@ -100,7 +100,7 @@ class GameRuntime:
             winner=None,
             termination_reason=None,
             decision_traces=[],
-            metadata={"ruleset": "paper_7p_v1"},
+            metadata={"ruleset": "standard_7p_v1"},
         )
 
     def _build_graph(self):
