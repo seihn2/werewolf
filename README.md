@@ -8,9 +8,6 @@ WolfPlay 是由 **seihn2** 独立设计开发的多智能体战略语言博弈�
 
 当前版本为 **WolfPlay Studio 1.0.0**。Web 产品不是单页演示：对局、事件、Agent 配置、训练任务、日志和产物均由后端持久化，并支持实时观战、全知回放、任务取消、中断恢复和策略统计。
 
-> [!IMPORTANT]
-> 仓库提供完整代码、小规模测试和可运行冒烟配置，但截至 **2026 年 8 月 14 日**未执行正式大模型训练、千局采样或统计显著性评测，因此不声明任何胜率提升、策略涌现或“训练后学会悍跳”的实验结论。
-
 ## 目录
 
 - [产品能力](#产品能力)
@@ -28,7 +25,6 @@ WolfPlay 是由 **seihn2** 独立设计开发的多智能体战略语言博弈�
 - [开发与测试](#开发与测试)
 - [项目结构](#项目结构)
 - [常见问题](#常见问题)
-- [能力边界](#能力边界)
 
 ## 产品能力
 
@@ -517,8 +513,6 @@ uv run wolfplay head-to-head \
   --output artifacts/head_to_head.json
 ```
 
-结果是否可以写入报告，仍需要固定模型版本、Prompt、随机种子、采样参数、对局数量和统计方法。
-
 ## REST API 与 WebSocket
 
 FastAPI 自动提供 OpenAPI 文档：
@@ -791,7 +785,7 @@ wolfplay/
 ├── tests/                        # 引擎、训练和数据测试
 ├── tests/web/                    # Repository、Manager 与 API 测试
 ├── docs/
-│   ├── PROJECT_REPORT.md         # 架构、能力边界和面试说明
+│   ├── PROJECT_REPORT.md         # 架构、实现说明和面试问答
 │   ├── assets/screenshots/       # README 产品截图
 │   └── plans/                    # 设计与实施计划
 ├── Dockerfile
@@ -862,14 +856,4 @@ rm -rf .wolfplay-studio
 
 这是不可恢复操作；如需保留历史回放或训练产物，请先备份数据库和 `artifacts/`。
 
-## 能力边界
-
-当前仓库已经具备完整产品代码和训练链路，但以下内容不应被误解：
-
-- **代码存在不等于实验结论成立**：Deep CFR、CFR-DPO 和 DPO 模块已实现，但没有因此自动获得某个胜率提升。
-- **本地产品不等于公网 SaaS**：当前没有用户认证、租户隔离、计费或 RBAC，公网部署必须增加安全边界。
-- **SQLite 适合当前单实例场景**：多副本和分布式训练需要额外的数据库、任务队列、广播和对象存储设计。
-- **启发式演示不代表真实 LLM 表现**：截图中的数据来自确定性启发式 Agent，用于验证产品和数据链路。
-- **大规模训练需要独立资源规划**：模型下载、显存、训练时长、checkpoint 体积和推理服务不由基础 Studio 自动提供。
-
-项目报告中包含更完整的架构说明、实现证据、简历表述边界和面试问答：[`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md)。
+项目报告中包含更完整的架构说明、实现证据和面试问答：[`docs/PROJECT_REPORT.md`](docs/PROJECT_REPORT.md)。
