@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import random
-from collections.abc import Mapping
+from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import replace
 from typing import Any
 
@@ -18,6 +18,7 @@ from .models import (
     DecisionTrace,
     Faction,
     GameAction,
+    GameEvent,
     GameResult,
     GameState,
     Phase,
@@ -36,6 +37,8 @@ STANDARD_7P_ROLES = [
     Role.VILLAGER,
 ]
 
+EventObserver = Callable[[GameEvent], Awaitable[None]]
+
 
 class GameRuntime:
     """A single seven-player Werewolf game executed by a LangGraph state machine."""
@@ -43,17 +46,27 @@ class GameRuntime:
     def __init__(
         self,
         *,
+        game_id: str | None = None,
         seed: int = 42,
         max_rounds: int = 8,
         backend: ChatBackend | None = None,
         backend_by_faction: Mapping[Faction, ChatBackend | None] | None = None,
+        event_observer: EventObserver | None = None,
+        public_event_delay_seconds: float = 0.0,
     ) -> None:
         if max_rounds <= 0:
             raise ValueError("max_rounds must be positive")
+        if game_id is not None and not game_id.strip():
+            raise ValueError("game_id must not be empty")
+        if public_event_delay_seconds < 0:
+            raise ValueError("public_event_delay_seconds must not be negative")
+        self.game_id = game_id or f"wolfplay-{seed:08x}"
         self.seed = seed
         self.max_rounds = max_rounds
         self.backend = backend
         self.backend_by_faction = dict(backend_by_faction or {})
+        self.event_observer = event_observer
+        self.public_event_delay_seconds = public_event_delay_seconds
         self.rng = random.Random(seed)
         self._has_run = False
         self.bus = AsyncMessageBus()
@@ -86,7 +99,7 @@ class GameRuntime:
             for index, role in enumerate(roles)
         }
         return GameState(
-            game_id=f"wolfplay-{self.seed:08x}",
+            game_id=self.game_id,
             seed=self.seed,
             round_no=1,
             max_rounds=self.max_rounds,
@@ -178,6 +191,10 @@ class GameRuntime:
             audience=audience,
         )
         self.memories.observe(event)
+        if self.event_observer is not None:
+            await self.event_observer(event)
+        if event.audience is None and self.public_event_delay_seconds:
+            await asyncio.sleep(self.public_event_delay_seconds)
         return event
 
     async def _setup(self, state: GameState) -> dict[str, Any]:

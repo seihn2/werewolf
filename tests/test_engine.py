@@ -53,3 +53,29 @@ async def test_runtime_cannot_be_reused():
         assert "only run one game" in str(error)
     else:
         raise AssertionError("expected GameRuntime reuse to fail")
+
+
+async def test_runtime_observer_receives_events_in_logical_order():
+    observed = []
+
+    async def observe(event):
+        observed.append(event)
+
+    result = await GameRuntime(seed=13, max_rounds=3, event_observer=observe).play()
+
+    assert observed
+    assert [event.logical_time for event in observed] == sorted(
+        event.logical_time for event in observed
+    )
+    assert [event.to_dict() for event in observed if event.audience is None] == [
+        event.to_dict() for event in result.events
+    ]
+
+
+def test_runtime_rejects_negative_public_event_delay():
+    try:
+        GameRuntime(public_event_delay_seconds=-0.1)
+    except ValueError as error:
+        assert "must not be negative" in str(error)
+    else:
+        raise AssertionError("expected negative delay to fail")

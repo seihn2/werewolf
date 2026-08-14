@@ -7,6 +7,9 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
+node_modules/
+.wolfplay-studio/
+*.tsbuildinfo
 dist/
 build/
 *.egg-info/

@@ -1,0 +1,15 @@
+.git
+.github
+.venv
+.wolfplay-studio
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+web/node_modules
+web/dist
+artifacts
+checkpoints
+data/generated
+game_logs
+game_memories

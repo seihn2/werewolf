@@ -1,0 +1,22 @@
+services:
+  wolfplay-studio:
+    build:
+      context: .
+      target: ${WOLFPLAY_DOCKER_TARGET:-studio}
+    ports:
+      - "${WOLFPLAY_STUDIO_PORT:-8000}:8000"
+    environment:
+      WOLFPLAY_STUDIO_HOST: 0.0.0.0
+      WOLFPLAY_STUDIO_PORT: 8000
+      WOLFPLAY_STUDIO_DATA_DIR: /data
+      WOLFPLAY_STUDIO_ARTIFACT_DIR: /data/artifacts
+      WOLFPLAY_STUDIO_FRONTEND_DIST: /app/web/dist
+      WOLFPLAY_API_KEY: ${WOLFPLAY_API_KEY:-}
+      WOLFPLAY_BASE_URL: ${WOLFPLAY_BASE_URL:-}
+      WOLFPLAY_MODEL: ${WOLFPLAY_MODEL:-}
+    volumes:
+      - wolfplay-data:/data
+    restart: unless-stopped
+
+volumes:
+  wolfplay-data:

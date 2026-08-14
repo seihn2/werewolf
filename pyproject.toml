@@ -4,14 +4,19 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wolfplay"
-version = "0.1.0"
+version = "1.0.0"
 description = "LangGraph multi-agent Werewolf environment with self-play and DPO data generation"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = [
+  "aiosqlite>=0.21,<1",
+  "fastapi>=0.141,<1",
+  "greenlet>=3.2,<4",
   "httpx>=0.28,<1",
   "langgraph>=1.0.8,<2",
+  "sqlalchemy>=2.0.51,<3",
   "typing-extensions>=4.12",
+  "uvicorn[standard]>=0.40,<1",
 ]
 
 [project.optional-dependencies]
@@ -33,6 +38,7 @@ train = [
 wolfplay = "wolfplay.cli:main"
 wolfplay-train-dpo = "wolfplay.training.dpo:main"
 wolfplay-train-deep-cfr = "wolfplay.training.deep_cfr:main"
+wolfplay-web = "wolfplay.web.app:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/wolfplay"]
